@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:elevation="4dp"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 时间 -->
+        <TextView
+            android:id="@+id/tvHistoryTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="时间: 2024-11-17 10:00"
+            android:textSize="14sp"
+            android:textColor="#888888" />
+
+        <!-- 问题 -->
+        <TextView
+            android:id="@+id/tvHistoryQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="问题: 我的事业发展如何？"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginTop="4dp" />
+
+        <!-- 抽到的牌和正逆位 -->
+        <TextView
+            android:id="@+id/tvHistoryCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="牌: The Fool - 愚者 (正位)"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginTop="4dp" />
+
+        <!-- 解答 -->
+        <TextView
+            android:id="@+id/tvHistoryAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="解答: 新的开始，充满机遇。"
+            android:textSize="14sp"
+            android:textColor="#555555"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
