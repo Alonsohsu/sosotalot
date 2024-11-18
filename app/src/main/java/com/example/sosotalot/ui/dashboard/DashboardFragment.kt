@@ -1,6 +1,7 @@
 package com.example.sosotalot.ui.dashboard
 
 import HistoryItem
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.sosotalot.databinding.FragmentDashboardBinding
+import com.example.sosotalot.ui.history.HistoryActivity
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.MappedByteBuffer
@@ -88,6 +90,14 @@ class DashboardFragment : Fragment() {
                 val result = inferWithLocalModel(question, "$randomCard ($orientation)")
                 binding.textView.text =
                     "问题：$question\n抽到的塔罗牌：$randomCard\n正逆位：$orientation\n解答：$result"
+
+                // 通过 Intent 传递数据到 HistoryActivity
+                val intent = Intent(requireContext(), HistoryActivity::class.java)
+                intent.putExtra("question", question)
+                intent.putExtra("tarotCard", randomCard)
+                intent.putExtra("orientation", orientation)
+                intent.putExtra("answer", result)
+                startActivity(intent)
             } else {
                 Toast.makeText(requireContext(), "请先输入问题再抽牌", Toast.LENGTH_SHORT).show()
             }

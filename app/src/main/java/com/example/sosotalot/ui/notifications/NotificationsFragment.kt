@@ -24,13 +24,13 @@ class NotificationsFragment : Fragment() {
         val root: View = binding.root
 
         // 設置 Adapter
-        val adapter = ViewPagerAdapter(this)
-        binding.viewPager.adapter = adapter
-
-        // 與 TabLayout 聯動
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = "Tab ${position + 1}"  // 動態設置 Tab 標籤
-        }.attach()
+//        val adapter = ViewPagerAdapter(this)
+//        binding.viewPager.adapter = adapter
+//
+//        // 與 TabLayout 聯動
+//        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+//            tab.text = "Tab ${position + 1}"  // 動態設置 Tab 標籤
+//        }.attach()
 
         return root
     }

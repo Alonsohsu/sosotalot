@@ -16,8 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sosotalot"
         tools:targetApi="31">
-
-        <activity
+            <activity android:name=".ui.history.HistoryActivity" />
+            <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">

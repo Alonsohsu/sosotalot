@@ -27,7 +27,7 @@ class HistoryActivity : AppCompatActivity() {
             val tarotCard = it.getStringExtra("tarotCard") ?: "未知牌"
             val orientation = it.getStringExtra("orientation") ?: "未知方向"
             val answer = it.getStringExtra("answer") ?: "暂无解答"
-            val time = System.currentTimeMillis() // 使用当前时间戳
+            val time = System.currentTimeMillis() // 当前时间戳
 
             // 添加新记录
             historyList.add(HistoryItem(time, question, "$tarotCard ($orientation)", answer))
