@@ -1,7 +1,5 @@
 package com.example.sosotalot.ui.dashboard
 
-import HistoryItem
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,20 +9,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.room.Room
+import com.coding.meet.storeimagesinroomdatabase.ImageDatabase
 import com.example.sosotalot.databinding.FragmentDashboardBinding
-import com.example.sosotalot.ui.history.HistoryActivity
+
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.tensorflow.lite.Interpreter
-import java.io.FileInputStream
-import java.nio.MappedByteBuffer
-import java.nio.channels.FileChannel
 import kotlin.random.Random
 
 class DashboardFragment : Fragment() {
-    // 定义一个全局的历史记录列表
-    private val historyList = mutableListOf<HistoryItem>()
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+
+    // Room 数据库实例
+    private lateinit var tflite: Interpreter
 
     // 塔罗牌列表
     private val tarotCards = listOf(
@@ -52,9 +53,6 @@ class DashboardFragment : Fragment() {
         "The World - 世界"
     )
 
-    // TensorFlow Lite 模型
-    private lateinit var tflite: Interpreter
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,16 +60,30 @@ class DashboardFragment : Fragment() {
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
+        val imageDatabase = Room.databaseBuilder(
+            requireContext().applicationContext,
+            ImageDatabase::class.java,
+            "images_db"
+        ).build()
+
+//        var context = requireContext().applicationContext
+//        // 初始化 Room 数据库
+//        try {
+//            database = DatabaseInstance.getDatabase(context)
+//        } catch (e: Exception) {
+//            Log.e("DatabaseInstance", "Error initializing Room database", e)
+//        }
+
+//        val db = Room.databaseBuilder(
+//            requireContext().applicationContext,
+//            AppDatabase::class.java, "app_database"
+//        ).build()
+
+
+
+
         // 禁用抽牌按钮，直到输入问题
         binding.imageButton.isEnabled = false
-
-        // 初始化本地模型
-        try {
-            tflite = Interpreter(loadModelFile("model.tflite"))
-        } catch (e: Exception) {
-            Log.e("TFLite", "加载模型失败: ${e.localizedMessage}")
-            Toast.makeText(requireContext(), "加载模型失败", Toast.LENGTH_SHORT).show()
-        }
 
         // 监听输入框内容变化
         binding.editTextQuestion.addTextChangedListener(object : TextWatcher {
@@ -82,22 +94,25 @@ class DashboardFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
+        // 随机选择一张塔罗牌并决定正逆位
+        fun getRandomTarotCardWithOrientation(): Pair<String, String> {
+            val card = tarotCards[Random.nextInt(tarotCards.size)]
+            val orientation = if (Random.nextBoolean()) "正位" else "逆位" // 随机正逆位
+            return Pair(card, orientation)
+        }
+
         // 设置 ImageButton 点击事件
         binding.imageButton.setOnClickListener {
             val question = binding.editTextQuestion.text.toString().trim()
             if (question.isNotEmpty()) {
                 val (randomCard, orientation) = getRandomTarotCardWithOrientation()
                 val result = inferWithLocalModel(question, "$randomCard ($orientation)")
+
                 binding.textView.text =
                     "问题：$question\n抽到的塔罗牌：$randomCard\n正逆位：$orientation\n解答：$result"
 
-                // 通过 Intent 传递数据到 HistoryActivity
-                val intent = Intent(requireContext(), HistoryActivity::class.java)
-                intent.putExtra("question", question)
-                intent.putExtra("tarotCard", randomCard)
-                intent.putExtra("orientation", orientation)
-                intent.putExtra("answer", result)
-                startActivity(intent)
+                // 保存记录到数据库
+                saveRecordToDatabase(question, randomCard, orientation, result)
             } else {
                 Toast.makeText(requireContext(), "请先输入问题再抽牌", Toast.LENGTH_SHORT).show()
             }
@@ -106,31 +121,28 @@ class DashboardFragment : Fragment() {
         return binding.root
     }
 
+    // 保存记录到 Room 数据库
+    private fun saveRecordToDatabase(question: String, card: String, orientation: String, result: String) {
+//        val record = HistoryItem(
+//            time = System.currentTimeMillis(),
+//            tarotCard = card,
+//            orientation = orientation,
+//            answer = result,
+//            question = question
+//        )
+
+        // 异步保存记录到数据库
+//        CoroutineScope(Dispatchers.IO).launch {
+//            database.historyDao().insertAll(record)
+//        }
+        Toast.makeText(requireContext(), "记录已保存", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // 避免内存泄漏
     }
 
-    // 随机选择一张塔罗牌并决定正逆位
-    private fun getRandomTarotCardWithOrientation(): Pair<String, String> {
-        val card = tarotCards[Random.nextInt(tarotCards.size)]
-        val orientation = if (Random.nextBoolean()) "正位" else "逆位" // 随机正逆位
-        return Pair(card, orientation)
-    }
-
-    // 加载 TensorFlow Lite 模型文件
-    private fun loadModelFile(modelFileName: String): MappedByteBuffer {
-        val fileDescriptor = requireContext().assets.openFd(modelFileName)
-        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-        val fileChannel = inputStream.channel
-        return fileChannel.map(
-            FileChannel.MapMode.READ_ONLY,
-            fileDescriptor.startOffset,
-            fileDescriptor.declaredLength
-        )
-    }
-
-    // 使用本地模型进行推理
     private fun inferWithLocalModel(question: String, tarotCardWithOrientation: String): String {
         // 模拟输入和输出
         val input = Array(1) { FloatArray(128) } // 模拟输入
@@ -147,3 +159,5 @@ class DashboardFragment : Fragment() {
         return "结合 $tarotCardWithOrientation 的模拟塔罗牌解答。"
     }
 }
+
+

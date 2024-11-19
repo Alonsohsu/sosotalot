@@ -3,10 +3,13 @@ package com.example.sosotalot
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.room.Room
+import com.coding.meet.storeimagesinroomdatabase.ImageDatabase
 import com.example.sosotalot.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.sosotalot.R
@@ -22,6 +23,28 @@ class NotificationsFragment : Fragment() {
     ): View {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        // 模拟数据
+        val versionList = listOf(
+            mapOf("versionName" to "版本 1.0.0", "releaseDate" to "2024-01-01"),
+            mapOf("versionName" to "版本 1.1.0", "releaseDate" to "2024-02-15"),
+            mapOf("versionName" to "版本 1.2.0", "releaseDate" to "2024-03-10")
+        )
+
+        // 找到 ListView
+//        val listView: ListView = view.findViewById(R.id.versionListView)
+
+        // 创建适配器
+//        val adapter = SimpleAdapter(
+//            this,
+//            versionList,
+//            android.R.layout.simple_list_item_2, // 系统提供的布局，显示两行文字
+//            arrayOf("versionName", "releaseDate"),
+//            intArrayOf(android.R.id.text1, android.R.id.text2)
+//        )
+
+        // 绑定适配器
+//        listView.adapter = adapter
 
         // 設置 Adapter
 //        val adapter = ViewPagerAdapter(this)
