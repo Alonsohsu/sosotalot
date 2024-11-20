@@ -9,11 +9,11 @@ import androidx.room.RoomDatabase
  */
 
 @Database(
-    entities = [ImageModel::class],
+    entities = [HistoryModel::class],
     version = 1,
     exportSchema = false
 )
-abstract class ImageDatabase : RoomDatabase() {
+abstract class HistoryDatabase : RoomDatabase() {
 
-    abstract val imageDao: ImageDao
+    abstract val historyDao: HistoryDao
 }

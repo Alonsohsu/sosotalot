@@ -9,12 +9,12 @@ import androidx.room.*
  */
 
 @Dao
-interface ImageDao {
+interface HistoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertImage(imageModel: ImageModel)
+    suspend fun insertHistory(historyModel: HistoryModel)
 
-    @Query("SELECT * FROM images")
-    fun getAllImages(): LiveData<List<ImageModel>>
+    @Query("SELECT * FROM history")
+    fun getAllHistory(): LiveData<List<HistoryModel>>
 
 }

@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.room.Room
-import com.coding.meet.storeimagesinroomdatabase.ImageDatabase
+import com.coding.meet.storeimagesinroomdatabase.HistoryDatabase
+import com.coding.meet.storeimagesinroomdatabase.HistoryModel
 import com.example.sosotalot.databinding.FragmentDashboardBinding
 
 import kotlinx.coroutines.CoroutineScope
@@ -60,28 +61,6 @@ class DashboardFragment : Fragment() {
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        val imageDatabase = Room.databaseBuilder(
-            requireContext().applicationContext,
-            ImageDatabase::class.java,
-            "images_db"
-        ).build()
-
-//        var context = requireContext().applicationContext
-//        // 初始化 Room 数据库
-//        try {
-//            database = DatabaseInstance.getDatabase(context)
-//        } catch (e: Exception) {
-//            Log.e("DatabaseInstance", "Error initializing Room database", e)
-//        }
-
-//        val db = Room.databaseBuilder(
-//            requireContext().applicationContext,
-//            AppDatabase::class.java, "app_database"
-//        ).build()
-
-
-
-
         // 禁用抽牌按钮，直到输入问题
         binding.imageButton.isEnabled = false
 
@@ -123,18 +102,27 @@ class DashboardFragment : Fragment() {
 
     // 保存记录到 Room 数据库
     private fun saveRecordToDatabase(question: String, card: String, orientation: String, result: String) {
-//        val record = HistoryItem(
-//            time = System.currentTimeMillis(),
-//            tarotCard = card,
-//            orientation = orientation,
-//            answer = result,
-//            question = question
-//        )
+        val record = HistoryModel(
+            time = System.currentTimeMillis(),
+            tarotCard = card,
+            orientation = orientation,
+            answer = result,
+            question = question
+        )
 
-        // 异步保存记录到数据库
-//        CoroutineScope(Dispatchers.IO).launch {
-//            database.historyDao().insertAll(record)
-//        }
+        var context = requireContext().applicationContext
+        // 初始化 Room 数据库
+        try {
+            var database = DatabaseInstance.getDatabase(context)
+            // 异步保存记录到数据库
+            CoroutineScope(Dispatchers.IO).launch {
+                database.historyDao.insertHistory(record)
+            }
+        } catch (e: Exception) {
+            Log.e("DatabaseInstance", "Error initializing Room database", e)
+        }
+
+
         Toast.makeText(requireContext(), "记录已保存", Toast.LENGTH_SHORT).show()
     }
 
