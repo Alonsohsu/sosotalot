@@ -12,6 +12,11 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.sosotalot.ui.login.LoginFragment"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
         android:id="@+id/navigation_divination"
         android:name="com.example.sosotalot.ui.dashboard.DashboardFragment"
         android:label="@string/title_divination"

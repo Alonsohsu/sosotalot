@@ -1,14 +1,15 @@
 package com.example.sosotalot
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.room.Room
 import com.example.sosotalot.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -24,8 +25,19 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
+        // 检查用户是否已登录
+        if (!isUserLoggedIn()) {
+            // 如果未登录，导航到 LoginFragment
+            navController.navigate(R.id.loginFragment)
+            // 隐藏底部导航栏
+            navView.visibility = View.GONE
+        } else {
+            // 显示底部导航栏
+            navView.visibility = View.VISIBLE
+        }
+
+        // 设置顶部导航栏和底部导航栏
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_divination, R.id.navigation_my
@@ -33,5 +45,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun isUserLoggedIn(): Boolean {
+        // 这里可以添加检查逻辑，比如从 SharedPreferences 检查登录状态
+        val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        return sharedPreferences.getBoolean("isLoggedIn", false)
     }
 }
