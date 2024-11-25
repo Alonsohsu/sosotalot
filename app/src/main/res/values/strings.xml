@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">sosotalot</string>
+    <string name="title_home">首頁</string>
+    <string name="title_divination">占卜</string>
+    <string name="title_history">歷史</string>
+    <string name="title_my">我的</string>
+    <string name="settings_button">設定</string>
+    <string name="app_logo">app_logo</string>
+    <string name="default_web_client_id">default_web_client_id</string>
+</resources>
