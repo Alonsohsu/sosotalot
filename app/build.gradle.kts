@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
-    id("com.android.application")
 }
 
 android {
@@ -81,4 +80,6 @@ dependencies {
 
     // google login
     implementation("com.google.firebase:firebase-auth:22.0.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
 }

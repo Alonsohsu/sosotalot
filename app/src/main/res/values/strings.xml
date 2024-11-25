@@ -6,4 +6,5 @@
     <string name="title_my">我的</string>
     <string name="settings_button">設定</string>
     <string name="app_logo">app_logo</string>
+    <string name="default_web_client_id">default_web_client_id</string>
 </resources>
