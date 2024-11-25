@@ -13,3 +13,29 @@
 .externalNativeBuild
 .cxx
 local.properties
+# 編譯輸出
+/build/
+/out/
+
+# 本地配置文件
+/local.properties
+
+# 日誌文件
+*.log
+
+# 操作系統文件
+.DS_Store
+Thumbs.db
+
+# Gradle 相關
+.gradle/
+/.idea/
+/*.iml
+
+# Android Studio 生成的文件
+/captures/
+/.externalNativeBuild/
+
+# 忽略 keystore 文件（如果有）
+*.jks
+app/google-services.json
