@@ -65,7 +65,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3") // 可选，用于日志
 
-    val room_version = "2.6.0"
+    val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
     // optional - Kotlin Extensions and Coroutines support for Room
@@ -75,11 +75,11 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     // google login
-    implementation("com.google.firebase:firebase-auth:22.0.0")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-auth:23.1.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
 }

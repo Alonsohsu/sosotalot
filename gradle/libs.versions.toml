@@ -13,6 +13,7 @@ lifecycleViewmodelKtx = "2.8.7"
 navigationFragmentKtx = "2.8.4"
 navigationUiKtx = "2.8.4"
 litert = "1.0.1"
+google-play-services = "20.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +28,7 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 litert = { group = "com.google.ai.edge.litert", name = "litert", version.ref = "litert" }
+google-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "google-play-services" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
