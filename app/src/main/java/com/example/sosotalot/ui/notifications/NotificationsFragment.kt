@@ -74,8 +74,8 @@ class NotificationsFragment : Fragment() {
             }
         }
 
-        class Fragment1 : Fragment(R.layout.fragment_home)
-        class Fragment2 : Fragment(R.layout.fragment_home)
-        class Fragment3 : Fragment(R.layout.fragment_home)
+        class Fragment1 : Fragment(R.layout.fragment_dashboard)
+        class Fragment2 : Fragment(R.layout.fragment_dashboard)
+        class Fragment3 : Fragment(R.layout.fragment_dashboard)
     }
 }

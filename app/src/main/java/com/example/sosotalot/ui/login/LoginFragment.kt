@@ -101,7 +101,7 @@ class LoginFragment : Fragment() {
             sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
 
             // 导航到主界面
-            findNavController().navigate(R.id.navigation_home)
+            findNavController().navigate(R.id.navigation_divination)
 
             Toast.makeText(requireContext(), "Welcome $userName", Toast.LENGTH_SHORT).show()
         }

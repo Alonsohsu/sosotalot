@@ -38,8 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navigation_home ||
-                destination.id == R.id.navigation_divination ||
+            if (destination.id == R.id.navigation_divination ||
                 destination.id == R.id.navigation_my) {
                 binding.navView.visibility = View.VISIBLE
             } else {
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         // 设置顶部导航栏和底部导航栏
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_divination, R.id.navigation_my
+                R.id.navigation_divination, R.id.navigation_my
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
