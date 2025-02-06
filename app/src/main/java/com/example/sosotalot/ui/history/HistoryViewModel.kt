@@ -1,4 +1,3 @@
 package com.example.sosotalot.ui.history
 
-class HistoryViewModel {
-}
+class HistoryViewModel

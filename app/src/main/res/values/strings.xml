@@ -7,4 +7,101 @@
     <string name="settings_button">設定</string>
     <string name="app_logo">app_logo</string>
     <string name="default_web_client_id">default_web_client_id</string>
+
+    <string name="tarot_prompt_system">
+        "您是一位專業的塔羅占卜師，擅長解析塔羅牌與運勢問題。請基於用戶的問題提供解讀，包括可能的未來發展方向。請注意，塔羅牌提供的是趨勢與建議，而非絕對預測。請按照以下格式提供深入的塔羅牌解讀：
+        (1) 牌義：解釋所抽到的塔羅牌的一般意義。
+        (2) 塔羅牌的提醒：強調此牌對該問題的指示與啟示。
+        (3) 建議的結果：根據該牌的解讀，給出可行的建議或行動方向。"
+    </string>
+
+        <string name="tarot_prompt_structure">
+        "您是一位專業的塔羅占卜師。請根據所提供的問題，以繁體中文提供深入的塔羅牌解讀。回應應該按照以下三個部分結構化：
+        (1) 牌義：解釋所抽到的塔羅牌的一般意義。
+        (2) 塔羅牌的提醒：強調此牌對該問題的指示與啟示。
+        (3) 建議的結果：根據該牌的解讀，給出可行的建議或行動方向。"
+    </string>
+    <string name="tarot_prompt_user">"問題: %1$s\n抽到的塔羅牌: %2$s (%3$s)\n請按照上述格式提供詳細的塔羅解讀。"</string>
+
+    <string-array name="all_tarot_cards">
+        <item>愚者</item>
+        <item>魔術師</item>
+        <item>女祭司</item>
+        <item>女皇</item>
+        <item>皇帝</item>
+        <item>教皇</item>
+        <item>戀人</item>
+        <item>戰車</item>
+        <item>力量</item>
+        <item>隱士</item>
+        <item>命運之輪</item>
+        <item>正義</item>
+        <item>倒吊人</item>
+        <item>死神</item>
+        <item>節制</item>
+        <item>惡魔</item>
+        <item>高塔</item>
+        <item>星星</item>
+        <item>月亮</item>
+        <item>太陽</item>
+        <item>審判</item>
+        <item>世界</item>
+        <item>聖杯王牌</item>
+        <item>聖杯二</item>
+        <item>聖杯三</item>
+        <item>聖杯四</item>
+        <item>聖杯五</item>
+        <item>聖杯六</item>
+        <item>聖杯七</item>
+        <item>聖杯八</item>
+        <item>聖杯九</item>
+        <item>聖杯十</item>
+        <item>聖杯侍者</item>
+        <item>聖杯騎士</item>
+        <item>聖杯皇后</item>
+        <item>聖杯國王</item>
+        <item>寶劍王牌</item>
+        <item>寶劍二</item>
+        <item>寶劍三</item>
+        <item>寶劍四</item>
+        <item>寶劍五</item>
+        <item>寶劍六</item>
+        <item>寶劍七</item>
+        <item>寶劍八</item>
+        <item>寶劍九</item>
+        <item>寶劍十</item>
+        <item>寶劍侍者</item>
+        <item>寶劍騎士</item>
+        <item>寶劍皇后</item>
+        <item>寶劍國王</item>
+        <item>權杖王牌</item>
+        <item>權杖二</item>
+        <item>權杖三</item>
+        <item>權杖四</item>
+        <item>權杖五</item>
+        <item>權杖六</item>
+        <item>權杖七</item>
+        <item>權杖八</item>
+        <item>權杖九</item>
+        <item>權杖十</item>
+        <item>權杖侍者</item>
+        <item>權杖騎士</item>
+        <item>權杖皇后</item>
+        <item>權杖國王</item>
+        <item>錢幣王牌</item>
+        <item>錢幣二</item>
+        <item>錢幣三</item>
+        <item>錢幣四</item>
+        <item>錢幣五</item>
+        <item>錢幣六</item>
+        <item>錢幣七</item>
+        <item>錢幣八</item>
+        <item>錢幣九</item>
+        <item>錢幣十</item>
+        <item>錢幣侍者</item>
+        <item>錢幣騎士</item>
+        <item>錢幣皇后</item>
+        <item>錢幣國王</item>
+    </string-array>
+
 </resources>

@@ -29,6 +29,20 @@
         app:layout_constraintTop_toBottomOf="@id/tvHistoryTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/btnClearHistory" />
+
+    <!-- 清除历史记录按钮 -->
+    <Button
+        android:id="@+id/btnClearHistory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="清除记录"
+        android:textSize="18sp"
+        android:padding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@android:color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

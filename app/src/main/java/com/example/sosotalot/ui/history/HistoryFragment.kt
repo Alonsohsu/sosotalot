@@ -1,9 +1,11 @@
 package com.example.sosotalot.ui.history
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coding.meet.storeimagesinroomdatabase.HistoryDatabase
@@ -39,9 +41,30 @@ class HistoryFragment : Fragment() {
 
         // 加载数据库中的历史记录
         loadHistoryFromDatabase()
-
+        setClearAllHistoryListener()
         return binding.root
     }
+
+    private fun setClearAllHistoryListener() {
+        binding.btnClearHistory.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("确认删除")
+                .setMessage("您确定要删除所有记录吗？此操作无法恢复！")
+                .setPositiveButton("删除") { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        database.historyDao.deleteAllHistory() // 执行删除操作
+                        CoroutineScope(Dispatchers.Main).launch {
+                            historyList.clear()
+                            adapter.notifyDataSetChanged()
+                            Toast.makeText(requireContext(), "所有记录已删除", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                .setNegativeButton("取消", null)
+                .show()
+        }
+    }
+
 
     private fun setupRecyclerView() {
         adapter = HistoryAdapter(historyList)

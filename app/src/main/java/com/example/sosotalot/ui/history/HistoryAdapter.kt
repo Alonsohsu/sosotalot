@@ -27,7 +27,12 @@ class HistoryAdapter(private val historyList: MutableList<HistoryModel>) :
             tvTime.text = "时间: ${Date(item.time)}"
             tvQuestion.text = "问题: ${item.question}"
             tvTarotCard.text = "牌: ${item.tarotCard}"
-            tvAnswer.text = "解答: ${item.answer}"
+
+            // 讓解答需要點擊才顯示
+            tvAnswer.text = "点击查看解答"
+            tvAnswer.setOnClickListener {
+                tvAnswer.text = "解答: ${item.answer}"
+            }
         }
     }
 
