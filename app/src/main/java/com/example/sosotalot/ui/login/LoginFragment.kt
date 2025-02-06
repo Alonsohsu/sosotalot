@@ -26,9 +26,7 @@ class LoginFragment : Fragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
@@ -39,20 +37,25 @@ class LoginFragment : Fragment() {
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
+        // 检查用户是否已经登录过
+        checkLoginStatus()
 
         return binding.root
+    }
 
+    private fun checkLoginStatus() {
+        if (sharedPreferences.getBoolean("isLoggedIn", false)) {
+            navigateToHomeScreen()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Google 登入按鈕監聽器
         binding.googleLoginButton.setOnClickListener {
             handleGoogleLogin()
         }
 
-        // 遊客登入按鈕監聽器
         binding.guestLoginButton.setOnClickListener {
             handleGuestLogin()
         }
@@ -64,15 +67,13 @@ class LoginFragment : Fragment() {
     }
 
     private fun handleGuestLogin() {
-        // 遊客登入的邏輯
-        Toast.makeText(requireContext(), "Guest login clicked", Toast.LENGTH_SHORT).show()
-        // TODO: 設置訪客模式並跳轉到主頁面
+        // 将登录状态设置为true
+        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
         navigateToHomeScreen()
     }
 
     private fun navigateToHomeScreen() {
-        val navController = findNavController()
-        navController.navigate(R.id.action_loginFragment_to_navigation_home)
+        findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -82,10 +83,9 @@ class LoginFragment : Fragment() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                // 登录成功，获取用户信息
+                // 登录成功，处理登录结果
                 handleSignInResult(account)
             } catch (e: ApiException) {
-                // 登录失败，处理错误
                 Log.e("GoogleLogin", "Sign-in failed: ${e.statusCode}")
                 Toast.makeText(requireContext(), "Login Failed", Toast.LENGTH_SHORT).show()
             }
@@ -94,16 +94,9 @@ class LoginFragment : Fragment() {
 
     private fun handleSignInResult(account: GoogleSignInAccount?) {
         if (account != null) {
-            val userName = account.displayName
-            val userEmail = account.email
-
-            // 将用户信息保存到 SharedPreferences 或 ViewModel
+            // 将登录状态设置为true
             sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-
-            // 导航到主界面
-            findNavController().navigate(R.id.navigation_divination)
-
-            Toast.makeText(requireContext(), "Welcome $userName", Toast.LENGTH_SHORT).show()
+            navigateToHomeScreen()
         }
     }
 
