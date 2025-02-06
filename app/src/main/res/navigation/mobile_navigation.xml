@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_divination"
-        android:name="com.example.sosotalot.ui.dashboard.DashboardFragment"
+        android:name="com.example.sosotalot.ui.tarot.TarotMasterSelectionFragment"
         android:label="@string/title_divination"
         tools:layout="@layout/fragment_dashboard" />
 
