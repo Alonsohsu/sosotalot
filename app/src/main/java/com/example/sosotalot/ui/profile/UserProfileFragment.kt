@@ -1,26 +1,23 @@
-package com.example.sosotalot.ui.notifications
+package com.example.sosotalot.ui.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.sosotalot.R
-import com.example.sosotalot.databinding.FragmentNotificationsBinding
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.sosotalot.databinding.FragmentUserProfileBinding
 
-class NotificationsFragment : Fragment() {
+class UserProfileFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
+    private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.logoutButton.setOnClickListener {

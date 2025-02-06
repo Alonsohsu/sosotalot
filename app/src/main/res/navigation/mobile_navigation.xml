@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/navigation_my"
-        android:name="com.example.sosotalot.ui.notifications.NotificationsFragment"
+        android:name="com.example.sosotalot.ui.profile.UserProfileFragment"
         android:label="@string/title_my"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_user_profile" />
 </navigation>
