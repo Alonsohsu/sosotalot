@@ -85,4 +85,47 @@ object OpenAIService {
             }
         }
     }
+
+    suspend fun fetchRecommendedLayouts(question: String): List<String>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val apiKey = BuildConfig.OPENAI_API_KEY
+
+                val prompt = "Given the tarot question: '$question', recommend three tarot layouts that would be most suitable for the user's situation."
+
+                val json = JSONObject().apply {
+                    put("model", "text-davinci-003")  // 使用一个适合生成列表和建议的模型
+                    put("prompt", prompt)
+                    put("max_tokens", 150)  // 控制输出的最大长度
+                }
+
+                val body = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+                val request = Request.Builder()
+                    .url("https://api.openai.com/v1/completions")
+                    .header("Authorization", "Bearer $apiKey")
+                    .post(body)
+                    .build()
+
+                val response = client.newCall(request).execute()
+                val responseData = response.body?.string()
+                val jsonResponse = JSONObject(responseData ?: "{}")
+
+                if (jsonResponse.has("choices")) {
+                    val choices = jsonResponse.getJSONArray("choices")
+                    val resultText = choices.getJSONObject(0).getString("text")
+                    // 假设返回的文本中的阵型用换行符分隔
+                    return@withContext resultText.split("\n").filter { it.isNotBlank() }
+                } else if (jsonResponse.has("error")) {
+                    val errorMessage = jsonResponse.getJSONObject("error").getString("message")
+                    Log.e("OpenAI", "API Error: $errorMessage")
+                    null
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("OpenAI", "API Request Error", e)
+                null
+            }
+        }
+    }
 }

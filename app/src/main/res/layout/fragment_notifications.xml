@@ -50,6 +50,50 @@
             android:textSize="18sp"
             android:textColor="#666666"
             android:gravity="center" />
+
+        <!-- 能量点 -->
+        <TextView
+            android:id="@+id/energyPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="能量點: 500"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center" />
+
+        <!-- 星光点 -->
+        <TextView
+            android:id="@+id/starlightPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="星光點: 300"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center" />
+
+        <!-- 福报 -->
+        <TextView
+            android:id="@+id/fortunePoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="福報: 200"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center" />
+
+        <!-- 祝福能量 -->
+        <TextView
+            android:id="@+id/blessingEnergy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="祝福能量: 400"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center" />
     </LinearLayout>
 
     <!-- 版本更新 -->
