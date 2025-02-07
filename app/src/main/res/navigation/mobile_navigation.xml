@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_divination">
+    app:startDestination="@+id/tarotMasterSelectionFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -12,11 +12,11 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_navigation_home"
-            app:destination="@id/navigation_divination" />
+            app:destination="@id/tarotMasterSelectionFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_divination"
+        android:id="@+id/tarotMasterSelectionFragment"
         android:name="com.example.sosotalot.ui.tarot.TarotMasterSelectionFragment"
         android:label="@string/title_divination"
         tools:layout="@layout/fragment_tarot_master_selection" />
@@ -32,4 +32,44 @@
         android:name="com.example.sosotalot.ui.profile.UserProfileFragment"
         android:label="@string/title_my"
         tools:layout="@layout/fragment_user_profile" />
+
+    <!-- Tarot Master Selection Fragment -->
+    <fragment
+        android:id="@+id/tarotMasterSelectionFragment"
+        android:name="com.example.sosotalot.ui.tarot.TarotMasterSelectionFragment"
+        android:label="Select Tarot Master"
+        tools:layout="@layout/fragment_tarot_master_selection">
+        <action
+            android:id="@+id/action_tarotMasterSelectionFragment_to_questionInputFragment"
+            app:destination="@id/questionInputFragment" />
+    </fragment>
+
+    <!-- Question Input Fragment -->
+    <fragment
+        android:id="@+id/questionInputFragment"
+        android:name="com.example.sosotalot.ui.tarot.QuestionInputFragment"
+        android:label="Input Question"
+        tools:layout="@layout/fragment_question_input">
+        <action
+            android:id="@+id/action_questionInputFragment_to_layoutSelectionFragment"
+            app:destination="@id/layoutSelectionFragment" />
+    </fragment>
+
+    <!-- Layout Selection Fragment -->
+    <fragment
+        android:id="@+id/layoutSelectionFragment"
+        android:name="com.example.sosotalot.ui.tarot.LayoutSelectionFragment"
+        android:label="Select Layout"
+        tools:layout="@layout/fragment_layout_selection">
+        <action
+            android:id="@+id/action_layoutSelectionFragment_to_cardDrawingFragment"
+            app:destination="@id/cardDrawingFragment" />
+    </fragment>
+
+    <!-- Card Drawing Fragment -->
+    <fragment
+        android:id="@+id/cardDrawingFragment"
+        android:name="com.example.sosotalot.ui.tarot.CardDrawingFragment"
+        android:label="Draw Cards"
+        tools:layout="@layout/fragment_card_drawing" />
 </navigation>

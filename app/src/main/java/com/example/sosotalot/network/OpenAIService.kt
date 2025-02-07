@@ -86,22 +86,59 @@ object OpenAIService {
         }
     }
 
-    suspend fun fetchRecommendedLayouts(question: String): List<String>? {
+    suspend fun fetchRecommendedLayouts(question: String): String? {
         return withContext(Dispatchers.IO) {
             try {
                 val apiKey = BuildConfig.OPENAI_API_KEY
 
-                val prompt = "Given the tarot question: '$question', recommend three tarot layouts that would be most suitable for the user's situation."
+                val prompt = """
+                你是一位专业塔罗师。请根据用户的问题，推荐最合适的塔罗牌阵型，并确保以下规则：
+                1. **必须推荐 1 种单张牌阵型**
+                2. **必须推荐 1 种两张牌阵型**
+                3. **必须推荐 1 种三张牌阵型**
+                4. **具体推荐哪种阵型，由你根据塔罗知识自行决定**
+
+                请按照以下 JSON 格式返回你的推荐，不要返回额外的文字或解释：
+                {
+                  "single_card": {
+                    "name": "阵型名称",
+                    "description": "适用于..."
+                  },
+                  "two_card_spread": {
+                    "name": "阵型名称",
+                    "description": "适用于..."
+                  },
+                  "three_card_spread": {
+                    "name": "阵型名称",
+                    "description": "适用于..."
+                  }
+                }
+
+                请确保：
+                - **所有阵型真实存在**，并且适用于用户的问题
+                - **不返回额外解释**，仅返回 JSON 数据
+            """.trimIndent()
+
+                val messagesArray = org.json.JSONArray().apply {
+                    put(JSONObject().apply {
+                        put("role", "system")
+                        put("content", prompt)
+                    })
+                    put(JSONObject().apply {
+                        put("role", "user")
+                        put("content", question)
+                    })
+                }
 
                 val json = JSONObject().apply {
-                    put("model", "text-davinci-003")  // 使用一个适合生成列表和建议的模型
-                    put("prompt", prompt)
-                    put("max_tokens", 150)  // 控制输出的最大长度
+                    put("model", "gpt-3.5-turbo")
+                    put("messages", messagesArray)
+                    put("max_tokens", 200)
                 }
 
                 val body = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
                 val request = Request.Builder()
-                    .url("https://api.openai.com/v1/completions")
+                    .url("https://api.openai.com/v1/chat/completions")
                     .header("Authorization", "Bearer $apiKey")
                     .post(body)
                     .build()
@@ -111,21 +148,19 @@ object OpenAIService {
                 val jsonResponse = JSONObject(responseData ?: "{}")
 
                 if (jsonResponse.has("choices")) {
-                    val choices = jsonResponse.getJSONArray("choices")
-                    val resultText = choices.getJSONObject(0).getString("text")
-                    // 假设返回的文本中的阵型用换行符分隔
-                    return@withContext resultText.split("\n").filter { it.isNotBlank() }
-                } else if (jsonResponse.has("error")) {
-                    val errorMessage = jsonResponse.getJSONObject("error").getString("message")
-                    Log.e("OpenAI", "API Error: $errorMessage")
-                    null
+                    val choicesArray = jsonResponse.getJSONArray("choices")
+                    val content = choicesArray.getJSONObject(0).getJSONObject("message").getString("content")
+                    return@withContext content // 确保返回的是 JSON 字符串
                 } else {
-                    null
+                    Log.e("OpenAI", "API Error: No choices in response")
+                    return@withContext null
                 }
             } catch (e: Exception) {
                 Log.e("OpenAI", "API Request Error", e)
-                null
+                return@withContext null
             }
         }
     }
+
+
 }

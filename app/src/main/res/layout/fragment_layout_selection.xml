@@ -10,17 +10,28 @@
         android:id="@+id/layoutDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="推荐阵型：过去、现在、未来"
+        android:text="推荐阵型："
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/layoutDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <Button
         android:id="@+id/confirmLayoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="确认阵型"
-        app:layout_constraintTop_toBottomOf="@id/layoutDescription"
-        android:layout_marginTop="16dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@id/radioGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

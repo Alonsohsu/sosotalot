@@ -1,6 +1,7 @@
 package com.example.sosotalot.ui.tarot
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.sosotalot.databinding.FragmentQuestionInputBinding
 import com.example.sosotalot.network.OpenAIService
 import com.example.sosotalot.utils.NetworkUtils
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class QuestionInputFragment : Fragment() {
     private var _binding: FragmentQuestionInputBinding? = null
@@ -36,17 +38,26 @@ class QuestionInputFragment : Fragment() {
 
     private fun fetchAndNavigate(question: String) {
         lifecycleScope.launch {
-            val layouts = OpenAIService.fetchRecommendedLayouts(question)
-            if (layouts != null && layouts.isNotEmpty()) {
-                val bundle = Bundle()
-                bundle.putStringArrayList("layoutsKey", ArrayList(layouts))
-//                findNavController().navigate(R.id.action_questionInputFragment_to_layoutSelectionFragment, bundle)
+            showLoading(true) // 显示加载状态
+            val responseJson = OpenAIService.fetchRecommendedLayouts(question)
+
+            if (!responseJson.isNullOrEmpty()) {
+                try {
+                    val bundle = Bundle().apply {
+                        putString("layoutsKeyJson", responseJson) // 直接传递 JSON 字符串
+                    }
+                    findNavController().navigate(R.id.action_questionInputFragment_to_layoutSelectionFragment, bundle)
+                } catch (e: Exception) {
+                    Log.e("fetchAndNavigate", "JSON 解析错误", e)
+                    Toast.makeText(requireContext(), "数据解析失败，请稍后再试", Toast.LENGTH_LONG).show()
+                }
             } else {
                 Toast.makeText(requireContext(), "无法获取推荐的塔罗阵型，请稍后再试", Toast.LENGTH_LONG).show()
             }
-            showLoading(false)
+            showLoading(false) // 关闭加载状态
         }
     }
+
 
     private fun showLoading(show: Boolean) {
         binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE

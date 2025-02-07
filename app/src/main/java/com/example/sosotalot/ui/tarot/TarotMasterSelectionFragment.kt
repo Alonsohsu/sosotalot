@@ -1,6 +1,7 @@
 package com.example.sosotalot.ui.tarot
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,7 @@ class TarotMasterSelectionFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTarotMasterSelectionBinding.inflate(inflater, container, false)
         setupListeners()
@@ -24,13 +24,18 @@ class TarotMasterSelectionFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.tarotMasterRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+        // 监听按钮点击事件而不是单选按钮改变事件
+        binding.confirmSelectionButton.setOnClickListener {
             navigateToQuestionInput()
         }
     }
 
     private fun navigateToQuestionInput() {
-//        findNavController().navigate(R.id.action_tarotMasterSelectionFragment_to_questionInputFragment)
+        if (findNavController().currentDestination?.id == R.id.tarotMasterSelectionFragment) {
+            findNavController().navigate(R.id.action_tarotMasterSelectionFragment_to_questionInputFragment)
+        } else {
+            Log.e("Navigation", "Attempted to navigate away from TarotMasterSelectionFragment but it's not the current destination.")
+        }
     }
 
     override fun onDestroyView() {
@@ -38,3 +43,4 @@ class TarotMasterSelectionFragment : Fragment() {
         _binding = null
     }
 }
+
