@@ -19,12 +19,15 @@ class TarotMasterSelectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTarotMasterSelectionBinding.inflate(inflater, container, false)
-        setupListeners()
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupListeners()  // 確保每次返回此 Fragment 時監聽器都被重新設置
+    }
+
     private fun setupListeners() {
-        // 设置每个塔罗师头像的点击监听器
         binding.imageMasterOne.setOnClickListener {
             navigateToQuestionInput(R.id.action_tarotMasterSelectionFragment_to_masterIntroFragment, 0)
         }
@@ -36,18 +39,23 @@ class TarotMasterSelectionFragment : Fragment() {
         }
     }
 
+
+
     private fun navigateToQuestionInput(actionId: Int, masterId: Int) {
+        val navController = findNavController()
+        val currentDestination = navController.currentDestination?.id
+
         val bundle = Bundle().apply {
             putInt("tarotMasterId", masterId)
         }
 
-        if (findNavController().currentDestination?.id == R.id.tarotMasterSelectionFragment) {
-            findNavController().navigate(actionId, bundle)
+        if (currentDestination == R.id.tarotMasterSelectionFragment) {
+            navController.navigate(actionId, bundle)
         } else {
-            Log.e("Navigation", "Attempted to navigate away from TarotMasterSelectionFragment but it's not the current destination.")
+            Log.e("Navigation", "Attempted to navigate away from TarotMasterSelectionFragment but it's not the current destination. Current destination is: $currentDestination")
         }
-
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

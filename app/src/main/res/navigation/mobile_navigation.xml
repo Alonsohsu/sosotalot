@@ -16,6 +16,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.sosotalot.ui.tarot.TarotMasterSelectionFragment"
+        android:label="@string/title_divination"
+        tools:layout="@layout/fragment_tarot_master_selection" />
+
+    <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.sosotalot.ui.history.HistoryFragment"
         android:label="@string/title_history"

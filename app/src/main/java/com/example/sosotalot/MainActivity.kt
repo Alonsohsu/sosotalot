@@ -2,10 +2,7 @@ package com.example.sosotalot
 
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -22,8 +19,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         // 检查用户是否已登录
@@ -31,29 +26,46 @@ class MainActivity : AppCompatActivity() {
             // 如果未登录，导航到 LoginFragment
             navController.navigate(R.id.loginFragment)
             // 隐藏底部导航栏
-            navView.visibility = View.GONE
+            binding.navView.visibility = View.GONE
         } else {
             // 显示底部导航栏
-            navView.visibility = View.VISIBLE
+            binding.navView.visibility = View.VISIBLE
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navigation_divination ||
-                destination.id == R.id.navigation_my) {
-                binding.navView.visibility = View.VISIBLE
-            } else {
-                binding.navView.visibility = View.GONE
-            }
+            // 根据目的地 ID 显示或隐藏导航栏
+            binding.navView.visibility = if (destination.id == R.id.loginFragment) View.GONE else View.VISIBLE
         }
 
-        // 设置顶部导航栏和底部导航栏
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_divination, R.id.navigation_my
+                R.id.navigation_dashboard, R.id.navigation_history, R.id.navigation_my
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
+
+        // 为底部导航栏设置监听器
+        binding.navView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_dashboard -> {
+                    // 首先尝试弹出回退栈中的实例
+                    navController.popBackStack(R.id.tarotMasterSelectionFragment, true)
+                    // 然后导航到 TarotMasterSelectionFragment
+                    navController.navigate(R.id.tarotMasterSelectionFragment)
+                    true // 表示事件已处理
+                }
+                R.id.navigation_history -> {
+                    navController.navigate(R.id.navigation_history)
+                    true
+                }
+                R.id.navigation_my -> {
+                    navController.navigate(R.id.navigation_my)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun isUserLoggedIn(): Boolean {
@@ -62,3 +74,4 @@ class MainActivity : AppCompatActivity() {
         return sharedPreferences.getBoolean("isLoggedIn", false)
     }
 }
+
