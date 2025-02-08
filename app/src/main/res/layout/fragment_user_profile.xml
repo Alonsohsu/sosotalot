@@ -51,6 +51,38 @@
             android:textColor="#666666"
             android:gravity="center" />
 
+        <TextView
+            android:id="@+id/userRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="用戶身份: 普通用戶"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center" />
+
+        <!-- 認證狀態 -->
+        <TextView
+            android:id="@+id/verificationStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="認證狀態: 未認證"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center" />
+
+        <!-- 背包 -->
+        <TextView
+            android:id="@+id/backpackItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="背包物品數: 10"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center" />
+
         <!-- 能量点 -->
         <TextView
             android:id="@+id/energyPoints"

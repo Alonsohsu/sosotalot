@@ -8,6 +8,7 @@
     <string name="settings_button">設定</string>
     <string name="app_logo">app_logo</string>
     <string name="default_web_client_id">default_web_client_id</string>
+    <string name="user_id_display">会员 ID: %1$s</string>
 
     <string name="tarot_prompt_system">
         "您是一位專業的塔羅占卜師，擅長解析塔羅牌與運勢問題。請基於用戶的問題提供解讀，包括可能的未來發展方向。請注意，塔羅牌提供的是趨勢與建議，而非絕對預測。請按照以下格式提供深入的塔羅牌解讀：

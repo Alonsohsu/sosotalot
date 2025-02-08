@@ -40,10 +40,14 @@
         tools:layout="@layout/fragment_bug" />
 
     <fragment
-        android:id="@+id/navigation_my"
-        android:name="com.example.sosotalot.ui.profile.UserProfileFragment"
-        android:label="@string/title_my"
-        tools:layout="@layout/fragment_user_profile" />
+    android:id="@+id/navigation_my"
+    android:name="com.example.sosotalot.ui.profile.UserProfileFragment"
+    android:label="@string/title_my"
+    tools:layout="@layout/fragment_user_profile">
+    <action
+        android:id="@+id/action_userProfileFragment_to_loginFragment"
+        app:destination="@id/loginFragment" />
+    </fragment>
 
     <!-- Tarot Master Selection Fragment -->
     <fragment
