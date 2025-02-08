@@ -12,6 +12,16 @@
         android:title="@string/title_history" />
 
     <item
+        android:id="@+id/navigation_shop"
+        android:icon="@drawable/baseline_shop_24"
+        android:title="@string/title_shop" />
+
+    <item
+        android:id="@+id/navigation_bug"
+        android:icon="@drawable/baseline_bug_24"
+        android:title="@string/title_bug" />
+
+    <item
         android:id="@+id/navigation_my"
         android:icon="@drawable/baseline_account_circle_24"
         android:title="@string/title_my" />

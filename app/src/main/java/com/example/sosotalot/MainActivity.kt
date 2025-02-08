@@ -39,7 +39,11 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_dashboard, R.id.navigation_history, R.id.navigation_my
+                R.id.navigation_dashboard,
+                R.id.navigation_history,
+                R.id.navigation_shop,
+                R.id.navigation_bug,
+                R.id.navigation_my
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -54,6 +58,14 @@ class MainActivity : AppCompatActivity() {
                     // 然后导航到 TarotMasterSelectionFragment
                     navController.navigate(R.id.tarotMasterSelectionFragment)
                     true // 表示事件已处理
+                }
+                R.id.navigation_shop -> {
+                    navController.navigate(R.id.navigation_shop)
+                    true
+                }
+                R.id.navigation_bug -> {
+                    navController.navigate(R.id.navigation_bug)
+                    true
                 }
                 R.id.navigation_history -> {
                     navController.navigate(R.id.navigation_history)

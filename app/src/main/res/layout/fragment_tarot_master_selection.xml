@@ -37,14 +37,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tarot_master_one_name"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_one_description"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_one_expertise"/>
         </LinearLayout>
 
         <!-- Tarot Master Two -->
@@ -67,14 +59,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tarot_master_two_name"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_two_description"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_two_expertise"/>
         </LinearLayout>
 
         <!-- Tarot Master Three -->
@@ -97,14 +81,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tarot_master_three_name"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_three_description"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_three_expertise"/>
         </LinearLayout>
 
         <!-- Tarot Master Four -->
@@ -126,14 +102,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tarot_master_three_name"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_three_description"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tarot_master_three_expertise"/>
         </LinearLayout>
 
     </androidx.gridlayout.widget.GridLayout>

@@ -37,7 +37,7 @@
             android:layout_height="100dp"
             android:src="@drawable/ic_home_black_24dp"
             android:scaleType="centerCrop"
-            android:contentDescription="@string/title_home"
+            android:contentDescription="@string/title_shop"
             android:background="@drawable/profile_picture_border" />
 
         <!-- 会员 ID -->

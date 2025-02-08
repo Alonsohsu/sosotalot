@@ -28,6 +28,18 @@
         tools:layout="@layout/fragment_history" />
 
     <fragment
+        android:id="@+id/navigation_shop"
+        android:name="com.example.sosotalot.ui.shop.ShopFragment"
+        android:label="@string/title_shop"
+        tools:layout="@layout/fragment_shop" />
+
+    <fragment
+        android:id="@+id/navigation_bug"
+        android:name="com.example.sosotalot.ui.bug.BugFragment"
+        android:label="@string/title_bug"
+        tools:layout="@layout/fragment_bug" />
+
+    <fragment
         android:id="@+id/navigation_my"
         android:name="com.example.sosotalot.ui.profile.UserProfileFragment"
         android:label="@string/title_my"
