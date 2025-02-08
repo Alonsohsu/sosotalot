@@ -23,7 +23,7 @@
         android:theme="@style/Theme.Sosotalot"
         tools:targetApi="31">
             <activity android:name=".ui.history.HistoryActivity" />
-            <activity android:name=".ui.result.TarotResultActivity" />
+            <activity android:name=".ui.tarot.TarotResultFragment" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

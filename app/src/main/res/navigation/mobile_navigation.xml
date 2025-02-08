@@ -16,12 +16,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/tarotMasterSelectionFragment"
-        android:name="com.example.sosotalot.ui.tarot.TarotMasterSelectionFragment"
-        android:label="@string/title_divination"
-        tools:layout="@layout/fragment_tarot_master_selection" />
-
-    <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.sosotalot.ui.history.HistoryFragment"
         android:label="@string/title_history"
@@ -40,9 +34,21 @@
         android:label="Select Tarot Master"
         tools:layout="@layout/fragment_tarot_master_selection">
         <action
-            android:id="@+id/action_tarotMasterSelectionFragment_to_questionInputFragment"
+            android:id="@+id/action_tarotMasterSelectionFragment_to_masterIntroFragment"
+            app:destination="@id/masterIntroFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/masterIntroFragment"
+        android:name="com.example.sosotalot.ui.profile.MasterIntroFragment"
+        android:label="Select Tarot Master"
+        tools:layout="@layout/fragment_master_intro">
+        <action
+            android:id="@+id/action_masterIntroFragment_to_questionInputFragment"
             app:destination="@id/questionInputFragment" />
     </fragment>
+
+
 
     <!-- Question Input Fragment -->
     <fragment
@@ -71,5 +77,18 @@
         android:id="@+id/cardDrawingFragment"
         android:name="com.example.sosotalot.ui.tarot.CardDrawingFragment"
         android:label="Draw Cards"
-        tools:layout="@layout/fragment_card_drawing" />
+        tools:layout="@layout/fragment_card_drawing">
+
+        <action
+            android:id="@+id/action_cardDrawingFragment_to_tarotResultFragment"
+            app:destination="@id/tarotResultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tarotResultFragment"
+        android:name="com.example.sosotalot.ui.tarot.TarotResultFragment"
+        android:label="Tarot Result"
+        tools:layout="@layout/fragment_tarot_result" />
+
+
 </navigation>

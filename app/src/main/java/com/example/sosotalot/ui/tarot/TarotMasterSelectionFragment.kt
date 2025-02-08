@@ -24,18 +24,29 @@ class TarotMasterSelectionFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        // 监听按钮点击事件而不是单选按钮改变事件
-        binding.confirmSelectionButton.setOnClickListener {
-            navigateToQuestionInput()
+        // 设置每个塔罗师头像的点击监听器
+        binding.imageMasterOne.setOnClickListener {
+            navigateToQuestionInput(R.id.action_tarotMasterSelectionFragment_to_masterIntroFragment, 0)
+        }
+        binding.imageMasterTwo.setOnClickListener {
+            navigateToQuestionInput(R.id.action_tarotMasterSelectionFragment_to_masterIntroFragment, 1)
+        }
+        binding.imageMasterThree.setOnClickListener {
+            navigateToQuestionInput(R.id.action_tarotMasterSelectionFragment_to_masterIntroFragment, 2)
         }
     }
 
-    private fun navigateToQuestionInput() {
+    private fun navigateToQuestionInput(actionId: Int, masterId: Int) {
+        val bundle = Bundle().apply {
+            putInt("tarotMasterId", masterId)
+        }
+
         if (findNavController().currentDestination?.id == R.id.tarotMasterSelectionFragment) {
-            findNavController().navigate(R.id.action_tarotMasterSelectionFragment_to_questionInputFragment)
+            findNavController().navigate(actionId, bundle)
         } else {
             Log.e("Navigation", "Attempted to navigate away from TarotMasterSelectionFragment but it's not the current destination.")
         }
+
     }
 
     override fun onDestroyView() {
@@ -43,4 +54,3 @@ class TarotMasterSelectionFragment : Fragment() {
         _binding = null
     }
 }
-

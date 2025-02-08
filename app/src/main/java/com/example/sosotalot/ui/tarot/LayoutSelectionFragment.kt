@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.sosotalot.R
@@ -23,6 +22,8 @@ class LayoutSelectionFragment : Fragment() {
         _binding = FragmentLayoutSelectionBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    data class RadioButtonData(val index: Int, val description: String)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,23 +48,29 @@ class LayoutSelectionFragment : Fragment() {
         }
 
         binding.radioGroup.removeAllViews()
+        var index = 0  // 手动处理索引
         layoutMap.forEach { (layoutName, recommendedLayout) ->
             if (recommendedLayout.isNotBlank()) {
                 val radioButton = RadioButton(requireContext()).apply {
                     text = "$layoutName - $recommendedLayout"
-                    tag = layoutDescriptions[layoutName]
+                    tag = RadioButtonData(index++, layoutDescriptions[layoutName] ?: "未知描述")
                     id = View.generateViewId()
                 }
                 binding.radioGroup.addView(radioButton)
             }
         }
 
+
+
         binding.confirmLayoutButton.setOnClickListener {
             val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(binding.radioGroup.checkedRadioButtonId)
-            val selectedDescription = selectedRadioButton?.tag?.toString() ?: return@setOnClickListener
+            val radioButtonData = selectedRadioButton?.tag as? RadioButtonData
+            val selectedIndex = radioButtonData?.index
+            val selectedDescription = radioButtonData?.description
 
             val bundle = Bundle().apply {
-                putString("selectedLayout", selectedDescription)
+                selectedIndex?.let { putInt("selectedIndex", it) }
+                selectedDescription?.let { putString("selectedDescription", it) }
                 putString("question", question)
             }
             findNavController().navigate(R.id.action_layoutSelectionFragment_to_cardDrawingFragment, bundle)
