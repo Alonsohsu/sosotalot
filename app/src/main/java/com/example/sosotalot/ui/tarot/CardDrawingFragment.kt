@@ -47,11 +47,10 @@ class CardDrawingFragment : Fragment() {
             ).apply {
                 gravity = Gravity.CENTER
             }
-            setImageResource(R.drawable.ic_notifications_black_24dp)  // 使用默认图标或塔罗牌占位图
+            setImageResource(R.drawable.tarlot_back)  // 使用默认图标或塔罗牌占位图
             scaleType = ImageView.ScaleType.FIT_CENTER
             setOnClickListener {
                 val question = arguments?.getString("question") ?: "未知问题"
-                val selectedIndex = arguments?.getInt("selectedIndex", -1) ?: -1  // 确保这里处理为非空
 
                 drawCardsAndShowResult(question)  // 响应点击，抽牌并显示结果
             }
@@ -93,16 +92,22 @@ class CardDrawingFragment : Fragment() {
 
     private fun addTwoCards(tarotCards: List<Pair<String, String>>, question: String, interpretation: String) {
         if (tarotCards.size >= 2) {
-            repeat(2) { index ->
-                val card = tarotCards[index] // 获取第 index 张卡牌
+            // 假設卡牌要水平排列，並且我們使用水平間隔來避免重疊
+            val cardWidth = resources.getDimensionPixelSize(R.dimen.tarot_card_width)  // 假設每張卡片寬度120dp
+            val cardHeight = resources.getDimensionPixelSize(R.dimen.tarot_card_height) // 假設每張卡片高度180dp
+            val cardSpacing = resources.getDimensionPixelSize(R.dimen.tarot_card_spacing) // 假設卡片間隔為20dp
+
+            tarotCards.take(2).forEachIndexed { index, card ->
                 val imageView = createImageView(card, question, interpretation, findNavController())
                 binding.cardContainer.addView(imageView)
                 imageView.layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
+                    cardWidth,
+                    cardHeight
                 ).apply {
-                    topMargin = if (index == 0) 0 else 200 // Adjust this value based on your UI
                     gravity = Gravity.CENTER_HORIZONTAL
+                    // 第一張卡片不設置邊距，第二張卡片設置左邊距
+                    leftMargin = if (index > 0) cardSpacing else 0
+                    topMargin = if (index == 0) 0 else 200  // 如果有需要，调整顶部边距以垂直分隔卡片
                 }
             }
         } else {
@@ -119,16 +124,19 @@ class CardDrawingFragment : Fragment() {
                 val imageView = createImageView(card, question, interpretation, findNavController())
                 binding.cardContainer.addView(imageView)
                 imageView.layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
+                    resources.getDimensionPixelSize(R.dimen.tarot_card_width), // 定义在dimens.xml中的固定宽度
+                    resources.getDimensionPixelSize(R.dimen.tarot_card_height) // 定义在dimens.xml中的固定高度
                 ).apply {
                     gravity = position
+                    leftMargin = if (position == Gravity.START) 0 else 20 // 根据位置调整左边距
+                    rightMargin = if (position == Gravity.END) 0 else 20 // 根据位置调整右边距
                 }
             }
         } else {
             Toast.makeText(context, "卡牌数量不足以显示三张", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 
     private fun drawCardsAndShowResult(question: String) {

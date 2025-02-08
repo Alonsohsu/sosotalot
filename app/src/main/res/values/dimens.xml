@@ -2,4 +2,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="tarot_card_width">120dp</dimen>  // 根据实际需要调整
+    <dimen name="tarot_card_height">180dp</dimen> // 根据实际需要调整
+    <dimen name="tarot_card_spacing">20dp</dimen>
+
 </resources>

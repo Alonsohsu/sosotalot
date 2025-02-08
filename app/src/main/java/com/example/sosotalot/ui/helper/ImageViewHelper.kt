@@ -15,7 +15,7 @@ fun Fragment.createImageView(card: Pair<String, String>, question: String, inter
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        setImageResource(R.drawable.ic_notifications_black_24dp)  // 假设你有一个占位符图像或实际的塔罗牌图像资源
+        setImageResource(R.drawable.tarlot_back)  // 假设你有一个占位符图像或实际的塔罗牌图像资源
         scaleType = ImageView.ScaleType.FIT_CENTER
         setTag(card)  // 将牌的信息存储在视图的标记中
 

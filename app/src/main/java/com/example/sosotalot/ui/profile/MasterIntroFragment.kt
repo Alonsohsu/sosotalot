@@ -1,7 +1,6 @@
 package com.example.sosotalot.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,7 @@ class MasterIntroFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMasterIntroBinding.inflate(inflater, container, false)
         return binding.root
@@ -40,24 +38,38 @@ class MasterIntroFragment : Fragment() {
         findNavController().navigate(R.id.action_masterIntroFragment_to_questionInputFragment, bundle)
     }
 
-
     private fun displayMasterDetails(masterId: Int) {
         val master = getMasterById(masterId)
         if (master != null) {
             binding.imageTop.setImageResource(master.imageResId)
-            binding.textDescription.text = master.description
+            binding.textName.text = getString(master.nameResId)
+            binding.textDescription.text = getString(master.descriptionResId)
+            binding.textExpertise.text = getString(master.expertiseResId)
         } else {
             binding.textDescription.text = "Master not found"
         }
     }
 
     private fun getMasterById(id: Int): Master? {
-        // This function should return a Master object based on the given ID
-        // For demonstration, returning a dummy Master. Replace this logic as needed.
         return when (id) {
-            0 -> Master(R.drawable.master_one_image, "蘿拉 - 深刻的心理洞察力和同理心。")
-            1 -> Master(R.drawable.master_two_image, "馬克斯 - 策略性思考者，擅长职业和财务规划。")
-            2 -> Master(R.drawable.master_three_image, "艾薇 - 靈性導師，提供深刻的靈性指導和啟發。")
+            0 -> Master(
+                imageResId = R.drawable.master_one_image,
+                nameResId = R.string.tarot_master_one_name,
+                descriptionResId = R.string.tarot_master_one_description,
+                expertiseResId = R.string.tarot_master_one_expertise
+            )
+            1 -> Master(
+                imageResId = R.drawable.master_two_image,
+                nameResId = R.string.tarot_master_two_name,
+                descriptionResId = R.string.tarot_master_two_description,
+                expertiseResId = R.string.tarot_master_two_expertise
+            )
+            2 -> Master(
+                imageResId = R.drawable.master_three_image,
+                nameResId = R.string.tarot_master_three_name,
+                descriptionResId = R.string.tarot_master_three_description,
+                expertiseResId = R.string.tarot_master_three_expertise
+            )
             else -> null
         }
     }
@@ -67,5 +79,10 @@ class MasterIntroFragment : Fragment() {
         _binding = null
     }
 
-    data class Master(val imageResId: Int, val description: String)
+    data class Master(
+        val imageResId: Int,
+        val nameResId: Int,
+        val descriptionResId: Int,
+        val expertiseResId: Int
+    )
 }
