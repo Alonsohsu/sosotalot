@@ -39,8 +39,6 @@ class TarotMasterSelectionFragment : Fragment() {
         }
     }
 
-
-
     private fun navigateToQuestionInput(actionId: Int, masterId: Int) {
         val navController = findNavController()
         val currentDestination = navController.currentDestination?.id
@@ -55,7 +53,6 @@ class TarotMasterSelectionFragment : Fragment() {
             Log.e("Navigation", "Attempted to navigate away from TarotMasterSelectionFragment but it's not the current destination. Current destination is: $currentDestination")
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

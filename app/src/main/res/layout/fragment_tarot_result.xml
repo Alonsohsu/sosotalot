@@ -24,13 +24,6 @@
         android:textStyle="bold"
         android:layout_marginTop="16dp" />
 
-    <!-- 進度條 (初始顯示) -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
-
     <!-- 解讀結果 (初始隱藏) -->
     <TextView
         android:id="@+id/textViewResult"
@@ -38,8 +31,7 @@
         android:layout_height="wrap_content"
         android:text="解讀結果"
         android:textSize="16sp"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:layout_marginTop="16dp" />
 
     <!-- 返回按鈕 -->
     <Button

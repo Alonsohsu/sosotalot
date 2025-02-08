@@ -11,14 +11,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.sosotalot.R
 import com.example.sosotalot.databinding.FragmentCardDrawingBinding
-import com.example.sosotalot.navigation.TarotNavigator
 import com.example.sosotalot.network.OpenAIService
 import com.example.sosotalot.tarot.TarotCardManager
-import com.example.sosotalot.ui.helper.createImageView
+import com.example.sosotalot.viewmodel.TarotViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,13 +30,45 @@ class CardDrawingFragment : Fragment() {
 
     private lateinit var tarotCardManager: TarotCardManager  // 声明 tarotCardManager
 
+    private val sharedViewModel: TarotViewModel by activityViewModels() // 使用 ViewModel 存储数据
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCardDrawingBinding.inflate(inflater, container, false)
-        tarotCardManager = TarotCardManager(requireContext())  // 实例化 TarotCardManager
-        initInitialCard()
+        tarotCardManager = TarotCardManager(requireContext())
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // **检查 ViewModel 是否已有抽取的牌**
+        if (sharedViewModel.drawnCards.value.isNullOrEmpty()) {
+            initInitialCard()  // 只有当 ViewModel 为空时才初始化
+        } else {
+            updateLayoutForSelectedSpread(
+                sharedViewModel.drawnCards.value!!,
+                sharedViewModel.selectedIndex.value ?: 0,
+                sharedViewModel.question.value ?: "未知问题",
+                sharedViewModel.interpretation.value ?: "暂无解读"
+            )
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // **检查 ViewModel 是否有数据**
+        if (!sharedViewModel.drawnCards.value.isNullOrEmpty()) {
+            updateLayoutForSelectedSpread(
+                sharedViewModel.drawnCards.value!!,
+                sharedViewModel.selectedIndex.value ?: 0,
+                sharedViewModel.question.value ?: "未知问题",
+                sharedViewModel.interpretation.value ?: "暂无解读"
+            )
+        }
     }
 
     private fun initInitialCard() {
@@ -47,18 +79,22 @@ class CardDrawingFragment : Fragment() {
             ).apply {
                 gravity = Gravity.CENTER
             }
-            setImageResource(R.drawable.tarlot_back)  // 使用默认图标或塔罗牌占位图
+            setImageResource(R.drawable.tarlot_back)
             scaleType = ImageView.ScaleType.FIT_CENTER
             setOnClickListener {
                 val question = arguments?.getString("question") ?: "未知问题"
-
-                drawCardsAndShowResult(question)  // 响应点击，抽牌并显示结果
+                drawCardsAndShowResult(question)
             }
         }
         binding.cardContainer.addView(initialImageView)
     }
 
-    private fun updateLayoutForSelectedSpread(tarotCards: List<Pair<String, String>>, selectedIndex: Int, question: String, interpretation: String) {
+    private fun updateLayoutForSelectedSpread(
+        tarotCards: List<Pair<String, String>>,
+        selectedIndex: Int,
+        question: String,
+        interpretation: String
+    ) {
         binding.cardContainer.removeAllViews()  // 清空现有布局
 
         when (selectedIndex) {
@@ -72,43 +108,76 @@ class CardDrawingFragment : Fragment() {
 
     private fun addSingleCard(tarotCards: List<Pair<String, String>>, question: String, interpretation: String) {
         if (tarotCards.isNotEmpty()) {
-            // 选择列表中的第一张卡牌
             val card = tarotCards[0]
 
-            // 创建ImageView，传递单张卡牌信息
-            val imageView = createImageView(card, question, interpretation, findNavController())
+            // 如果這張卡片有結果圖片，則顯示結果圖片；否則顯示塔羅牌背面
+            val isCardRevealed = sharedViewModel.isCardRevealed(card.first)
+
+            val imageView = ImageView(requireContext()).apply {
+                layoutParams = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.CENTER
+                }
+
+                // **如果卡片已被翻開，顯示結果圖；否則顯示背面**
+                val drawable = if (isCardRevealed) {
+                    tarotCardManager.getCardImage(card.first)
+                } else {
+                    resources.getDrawable(R.drawable.tarlot_back, null)
+                }
+                setImageDrawable(drawable)
+
+                // 逆位翻轉 180 度
+                scaleY = if (card.second == "逆位") -1f else 1f
+
+                // 點擊後顯示解釋
+                setOnClickListener {
+                    sharedViewModel.revealCard(card.first) // 記錄這張卡片已經被翻開
+                    navigateToResultScreen(card, question, interpretation)
+                }
+            }
 
             binding.cardContainer.addView(imageView)
-            imageView.layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = Gravity.CENTER
-            }
         } else {
             Toast.makeText(context, "没有可用的卡牌信息", Toast.LENGTH_SHORT).show()
         }
     }
 
+
     private fun addTwoCards(tarotCards: List<Pair<String, String>>, question: String, interpretation: String) {
         if (tarotCards.size >= 2) {
-            // 假設卡牌要水平排列，並且我們使用水平間隔來避免重疊
-            val cardWidth = resources.getDimensionPixelSize(R.dimen.tarot_card_width)  // 假設每張卡片寬度120dp
-            val cardHeight = resources.getDimensionPixelSize(R.dimen.tarot_card_height) // 假設每張卡片高度180dp
-            val cardSpacing = resources.getDimensionPixelSize(R.dimen.tarot_card_spacing) // 假設卡片間隔為20dp
-
             tarotCards.take(2).forEachIndexed { index, card ->
-                val imageView = createImageView(card, question, interpretation, findNavController())
-                binding.cardContainer.addView(imageView)
-                imageView.layoutParams = FrameLayout.LayoutParams(
-                    cardWidth,
-                    cardHeight
-                ).apply {
-                    gravity = Gravity.CENTER_HORIZONTAL
-                    // 第一張卡片不設置邊距，第二張卡片設置左邊距
-                    leftMargin = if (index > 0) cardSpacing else 0
-                    topMargin = if (index == 0) 0 else 200  // 如果有需要，调整顶部边距以垂直分隔卡片
+                val isCardRevealed = sharedViewModel.isCardRevealed(card.first)
+
+                val imageView = ImageView(requireContext()).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        resources.getDimensionPixelSize(R.dimen.tarot_card_width),
+                        resources.getDimensionPixelSize(R.dimen.tarot_card_height)
+                    ).apply {
+                        gravity = Gravity.CENTER_HORIZONTAL
+                        leftMargin = if (index > 0) resources.getDimensionPixelSize(R.dimen.tarot_card_spacing) else 0
+                    }
+
+                    // **如果卡片已翻開，顯示結果圖片，否則顯示塔羅背面**
+                    val drawable = if (isCardRevealed) {
+                        tarotCardManager.getCardImage(card.first)
+                    } else {
+                        resources.getDrawable(R.drawable.tarlot_back, null)
+                    }
+                    setImageDrawable(drawable)
+
+                    // 逆位翻轉
+                    scaleY = if (card.second == "逆位") -1f else 1f
+
+                    setOnClickListener {
+                        sharedViewModel.revealCard(card.first)
+                        navigateToResultScreen(card, question, interpretation)
+                    }
                 }
+
+                binding.cardContainer.addView(imageView)
             }
         } else {
             Toast.makeText(context, "卡牌数量不足以显示两张", Toast.LENGTH_SHORT).show()
@@ -116,33 +185,64 @@ class CardDrawingFragment : Fragment() {
     }
 
 
+
     private fun addThreeCards(tarotCards: List<Pair<String, String>>, question: String, interpretation: String) {
         val positions = arrayOf(Gravity.START, Gravity.CENTER, Gravity.END)
+
         if (tarotCards.size >= 3) {
             positions.forEachIndexed { index, position ->
-                val card = tarotCards[index] // 获取第 index 张卡牌
-                val imageView = createImageView(card, question, interpretation, findNavController())
-                binding.cardContainer.addView(imageView)
-                imageView.layoutParams = FrameLayout.LayoutParams(
-                    resources.getDimensionPixelSize(R.dimen.tarot_card_width), // 定义在dimens.xml中的固定宽度
-                    resources.getDimensionPixelSize(R.dimen.tarot_card_height) // 定义在dimens.xml中的固定高度
-                ).apply {
-                    gravity = position
-                    leftMargin = if (position == Gravity.START) 0 else 20 // 根据位置调整左边距
-                    rightMargin = if (position == Gravity.END) 0 else 20 // 根据位置调整右边距
+                val card = tarotCards[index]
+                val isCardRevealed = sharedViewModel.isCardRevealed(card.first)
+
+                val imageView = ImageView(requireContext()).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        resources.getDimensionPixelSize(R.dimen.tarot_card_width),
+                        resources.getDimensionPixelSize(R.dimen.tarot_card_height)
+                    ).apply {
+                        gravity = position
+                    }
+
+                    // **如果卡片已翻開，顯示結果圖片，否則顯示塔羅背面**
+                    val drawable = if (isCardRevealed) {
+                        tarotCardManager.getCardImage(card.first)
+                    } else {
+                        resources.getDrawable(R.drawable.tarlot_back, null)
+                    }
+                    setImageDrawable(drawable)
+
+                    // 逆位翻轉
+                    scaleY = if (card.second == "逆位") -1f else 1f
+
+                    setOnClickListener {
+                        sharedViewModel.revealCard(card.first)
+                        navigateToResultScreen(card, question, interpretation)
+                    }
                 }
+
+                binding.cardContainer.addView(imageView)
             }
         } else {
             Toast.makeText(context, "卡牌数量不足以显示三张", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun navigateToResultScreen(card: Pair<String, String>, question: String, interpretation: String) {
+        val bundle = Bundle().apply {
+            putString("question", question)
+            putString("selected_card_name", card.first)  // 卡牌名稱
+            putString("selected_card_position", card.second)  // "正位" or "逆位"
+            putString("interpretation", interpretation)
+            putInt("selectedIndex", arguments?.getInt("selectedIndex") ?: 0) // 牌陣選擇索引
+        }
+
+        findNavController().navigate(R.id.action_cardDrawingFragment_to_tarotResultFragment, bundle)
+    }
 
 
     private fun drawCardsAndShowResult(question: String) {
-        showLoading(true)  // 显示加载动画
+        showLoading(true)
 
-        val tarotCards = tarotCardManager.drawRandomTarotCards()  // 抽牌
+        val tarotCards = tarotCardManager.drawRandomTarotCards()
 
         lifecycleScope.launch {
             val interpretation = OpenAIService.fetchTarotData(
@@ -153,11 +253,13 @@ class CardDrawingFragment : Fragment() {
             )
 
             withContext(Dispatchers.Main) {
-                showLoading(false)  // 隐藏加载动画
+                showLoading(false)
                 if (interpretation != null) {
-                    val selectedIndex = arguments?.getInt("selectedIndex", -1) ?: -1  // 确保这里处理为非空
+                    val selectedIndex = arguments?.getInt("selectedIndex", -1) ?: -1
                     if (selectedIndex != -1) {
-                        updateLayoutForSelectedSpread(tarotCards, selectedIndex, question, interpretation)  // 更新布局
+                        // **存储结果到 ViewModel**
+                        sharedViewModel.setTarotData(question, tarotCards, interpretation, selectedIndex)
+                        updateLayoutForSelectedSpread(tarotCards, selectedIndex, question, interpretation)
                     } else {
                         Toast.makeText(context, "请选择一个牌阵再继续", Toast.LENGTH_SHORT).show()
                     }
