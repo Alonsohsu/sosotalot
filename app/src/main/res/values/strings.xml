@@ -9,6 +9,14 @@
     <string name="app_logo">app_logo</string>
     <string name="default_web_client_id">default_web_client_id</string>
     <string name="user_id_display">会员 ID: %1$s</string>
+    <string name="user_nickname_display">暱稱: %s</string>
+    <string name="user_role_display">用戶身份: %s</string>
+    <string name="verification_status_display">認證狀態: %s</string>
+    <string name="backpack_items_display">背包: %d</string>
+    <string name="energy_points_display">能量點: %d</string>
+    <string name="starlight_points_display">星光點: %d</string>
+    <string name="fortune_points_display">福報: %d</string>
+    <string name="blessing_energy_display">祝福能量: %d</string>
 
     <string name="tarot_prompt_system">
         "您是一位專業的塔羅占卜師，擅長解析塔羅牌與運勢問題。請基於用戶的問題提供解讀，包括可能的未來發展方向。請注意，塔羅牌提供的是趨勢與建議，而非絕對預測。請按照以下格式提供深入的塔羅牌解讀：

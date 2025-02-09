@@ -130,16 +130,40 @@ class LoginFragment : Fragment() {
      * 访客登录
      */
     private fun handleGuestLogin() {
+        val prefs = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
+        val savedGuestUid = prefs.getString("guestUserId", null)
+
+        if (savedGuestUid != null) {
+            // ✅ 本機已經有訪客 ID，直接使用
+            sharedPreferences.edit().putString("userId", savedGuestUid).apply()
+            navigateToHomeScreen()
+        } else {
+            // 🚀 如果沒有訪客 ID，則創建新的匿名帳戶
+            firebaseAuth.signInAnonymously().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = firebaseAuth.currentUser
+                    user?.let {
+                        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+                        sharedPreferences.edit().putString("userId", it.uid).apply()
+                        sharedPreferences.edit().putString("guestUserId", it.uid).apply() // ✅ 存入訪客 UID
+                        FirebaseManager.saveUserDataToFirestore(it) // ✅ 存入 Firestore
+                        navigateToHomeScreen()
+                    }
+                } else {
+                    Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
+    private fun createNewGuestAccount() {
         firebaseAuth.signInAnonymously().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = firebaseAuth.currentUser
                 user?.let {
-                    sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-                    sharedPreferences.edit().putString("userId", it.uid).apply()
-
-                    // ✅ 存入 Firestore
-                    FirebaseManager.saveUserDataToFirestore(it)
-
+                    sharedPreferences.edit().putString("guestUserId", it.uid).apply() // ✅ 儲存訪客 UID
+                    FirebaseManager.saveUserDataToFirestore(it) // ✅ 存入 Firestore
                     navigateToHomeScreen()
                 }
             } else {
@@ -147,6 +171,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
 
     /**
      * 导航到主界面
