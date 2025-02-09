@@ -16,6 +16,8 @@ litert = "1.0.1"
 google-play-services = "20.7.0"
 firebaseFirestoreKtx = "25.1.2"
 firebaseStorageKtx = "21.0.1"
+firebaseConfigKtx = "22.1.0"
+appUpdateKtx = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +35,8 @@ litert = { group = "com.google.ai.edge.litert", name = "litert", version.ref = "
 google-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "google-play-services" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+firebase-config-ktx = { group = "com.google.firebase", name = "firebase-config-ktx", version.ref = "firebaseConfigKtx" }
+app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "appUpdateKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,19 +1,31 @@
 package com.example.sosotalot.ui.profile
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.sosotalot.R
+import com.example.sosotalot.BuildConfig
 import com.example.sosotalot.databinding.FragmentUserProfileBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.android.play.core.appupdate.*
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 
 class UserProfileFragment : Fragment() {
     private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var remoteConfig: FirebaseRemoteConfig
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val UPDATE_REQUEST_CODE = 123
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -26,8 +38,10 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupUserProfile()
-        binding.logoutButton.setOnClickListener {
-            logoutUser()
+
+        // 設定檢查更新按鈕
+        binding.checkUpdateButton.setOnClickListener {
+            checkForUpdate()
         }
     }
 
@@ -69,32 +83,65 @@ class UserProfileFragment : Fragment() {
         // 祝福能量
         val blessingEnergy = prefs.getInt("blessingEnergy", 0)
         binding.blessingEnergy.text = blessingEnergy.toString()
+
+        val versionName = BuildConfig.VERSION_NAME
+        binding.versionInfo.text = "版本資訊: v$versionName"
+
     }
 
-    private fun logoutUser() {
-        val prefs = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
-        val savedGuestUid = prefs.getString("guestUserId", null) // 🚀 保留訪客 ID
+    private fun checkForUpdate() {
+        // 1️⃣ 初始化 Firebase Remote Config
+        remoteConfig = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(3600) // 1 小時更新一次
+            .build()
+        remoteConfig.setConfigSettingsAsync(configSettings)
 
-        // ✅ 退出 Firebase 认证
-        FirebaseAuth.getInstance().signOut()
+        // 2️⃣ 取得遠端最新版本號
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val latestVersion = remoteConfig.getString("latest_version")
+                val currentVersion = BuildConfig.VERSION_NAME
+                Log.d("UpdateCheck", "Firebase 最新版本: $latestVersion，本機版本: $currentVersion")
 
-        // ✅ 只清除登入狀態 & 一般用戶 ID，保留訪客 UID
-        val editor = prefs.edit()
-        editor.remove("isLoggedIn") // 清除登入狀態
-        editor.remove("userId") // 清除一般用戶 ID
-
-        if (savedGuestUid != null) {
-            editor.putString("guestUserId", savedGuestUid) // 🔄 重新存入訪客 UID
+                if (latestVersion.isNotEmpty() && latestVersion != currentVersion) {
+                    showUpdateDialog()
+                } else {
+                    Snackbar.make(requireView(), "您的應用程式已是最新版本", Snackbar.LENGTH_SHORT).show()
+                }
+            } else {
+                Snackbar.make(requireView(), "檢查更新失敗，請稍後再試", Snackbar.LENGTH_SHORT).show()
+            }
         }
-
-        editor.apply()
-
-        // ✅ 返回登录界面
-        navigateToLoginScreen()
     }
 
-    private fun navigateToLoginScreen() {
-        findNavController().navigate(R.id.action_userProfileFragment_to_loginFragment) // ✅ 导航到登录界面
+    private fun showUpdateDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("應用程式更新")
+            .setMessage("有新版本可用，是否立即更新？")
+            .setPositiveButton("更新") { _, _ -> startInAppUpdate() }
+            .setNegativeButton("稍後") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+    private fun startInAppUpdate() {
+        appUpdateManager = AppUpdateManagerFactory.create(requireContext())
+        val appUpdateInfoTask: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    requireActivity(),
+                    UPDATE_REQUEST_CODE
+                )
+            } else {
+                Snackbar.make(requireView(), "目前沒有可用的更新", Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroyView() {

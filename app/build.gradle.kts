@@ -22,7 +22,7 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -77,6 +77,8 @@ dependencies {
     implementation(libs.litert)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.config.ktx)
+    implementation(libs.app.update.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -105,5 +107,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     implementation("androidx.gridlayout:gridlayout:1.0.0")
+
+//    implementation("com.google.firebase:firebase-config-ktx")
+
 
 }

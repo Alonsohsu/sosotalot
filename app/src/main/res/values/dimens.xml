@@ -7,4 +7,8 @@
     <dimen name="tarot_card_height">180dp</dimen> // 根据实际需要调整
     <dimen name="tarot_card_spacing">20dp</dimen>
 
+    <!-- Text size -->
+    <dimen name="text_size_title">24sp</dimen>
+    <dimen name="text_size_description">24sp</dimen>
+
 </resources>
