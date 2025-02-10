@@ -1,0 +1,49 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- 圖片 -->
+    <ImageView
+        android:id="@+id/layoutImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- 標題 -->
+    <TextView
+        android:id="@+id/layoutName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="三張牌陣型"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/layoutImage"
+        app:layout_constraintTop_toTopOf="@id/layoutImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"/>
+
+    <!-- 陣型解讀描述 -->
+    <TextView
+        android:id="@+id/layoutMeaning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="過去 - 現在 - 未來"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="@id/layoutName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutName"
+        android:layout_marginTop="4dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

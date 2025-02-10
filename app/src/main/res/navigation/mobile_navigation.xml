@@ -80,7 +80,9 @@
         tools:layout="@layout/fragment_question_input">
         <action
             android:id="@+id/action_questionInputFragment_to_layoutSelectionFragment"
-            app:destination="@id/layoutSelectionFragment" />
+            app:destination="@id/layoutSelectionFragment"
+            app:popUpTo="@id/questionInputFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <!-- Layout Selection Fragment -->
@@ -91,7 +93,10 @@
         tools:layout="@layout/fragment_layout_selection">
         <action
             android:id="@+id/action_layoutSelectionFragment_to_cardDrawingFragment"
-            app:destination="@id/cardDrawingFragment" />
+            app:destination="@id/cardDrawingFragment"
+            app:popUpTo="@id/layoutSelectionFragment"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
     <!-- Card Drawing Fragment -->
@@ -105,6 +110,8 @@
             android:id="@+id/action_cardDrawingFragment_to_tarotResultFragment"
             app:destination="@id/tarotResultFragment" />
     </fragment>
+
+
 
     <fragment
         android:id="@+id/tarotResultFragment"

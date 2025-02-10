@@ -18,6 +18,11 @@
     <string name="fortune_points_display">福報: %d</string>
     <string name="blessing_energy_display">祝福能量: %d</string>
 
+
+    <string name="error_no_choose_layout">請選擇一個牌陣再繼續</string>
+    <string name="error_interpretation_no_found">解釋獲取失敗，請重試</string>
+
+
     <string name="tarot_prompt_system">
         "您是一位專業的塔羅占卜師，擅長解析塔羅牌與運勢問題。請基於用戶的問題提供解讀，包括可能的未來發展方向。請注意，塔羅牌提供的是趨勢與建議，而非絕對預測。請按照以下格式提供深入的塔羅牌解讀：
         (1) 牌義：解釋所抽到的塔羅牌的一般意義。
@@ -137,46 +142,55 @@
     </string>
 
     <string name="tarot_prompt">
-    你是一位专业塔罗师。请根据用户的问题，推荐最合适的塔罗牌阵型，并确保以下规则：
-    1. 必须推荐 1 种单张牌阵型
-    2. 必须推荐 1 种两张牌阵型
-    3. 必须推荐 1 种三张牌阵型
-    4. 具体推荐哪种阵型，由你根据塔罗知识自行决定
+    你是一位專業塔羅師。請根據使用者的問題，推薦最合適的塔羅牌陣型，並確保以下規則：
 
-    请按照以下 JSON 格式返回你的推荐，不要返回额外的文字或解释：
+    1. 必須推薦 1 種單張牌陣型
+    2. 必須推薦 1 種兩張牌陣型
+    3. 必須推薦 1 種三張牌陣型
+    4. 具體推薦哪種陣型，由你根據塔羅知識自行決定
+
+    請按照以下 JSON 格式和繁體中文返回你的推薦，不要返回額外的文字或解釋：
     {
       "single_card": {
-        "name": "阵型名称",
-        "description": "适用于..."
+        "name": "陣型名稱",
+        "meaning": "第一張牌代表...",
+        "description": "適用於..."
       },
       "two_card_spread": {
-        "name": "阵型名称",
-        "description": "适用于..."
+        "name": "陣型名稱",
+        "meaning": "第一張牌代表...",
+        "description": "適用於..."
       },
       "three_card_spread": {
-        "name": "阵型名称",
-        "description": "适用于..."
+        "name": "陣型名稱",
+        "meaning": "第一張牌代表...",
+        "description": "適用於..."
       }
     }
 
-    请确保：
-    - 所有阵型真实存在，并且适用于用户的问题
-    - 不返回额外解释，仅返回 JSON 数据
+    請確保：
+    - 所有陣型真實存在，並且適用於使用者的問題
+    - 不返回額外解釋，僅返回 JSON 數據
 </string>
 
     <!-- Lora: The Gentle Psychological Insight -->
-    <string name="tarot_master_one_name">蘿拉 (Lora) — 溫柔的心理洞察者</string>
+    <string name="tarot_master_one_name">蘿拉 — 心理洞察者</string>
     <string name="tarot_master_one_description">蘿拉擁有深刻的心理洞察力，她的語氣溫柔、說話方式富有同理心，能夠讓求占者感到安心和被理解。她經常能夠洞悉問題的核心，幫助人們探索內心的情感和困擾。</string>
     <string name="tarot_master_one_expertise">情感關係、自我發展、心理健康問題。</string>
 
     <!-- Max: The Strategic Thinker -->
-    <string name="tarot_master_two_name">馬克斯 (Max) — 策略性思考者</string>
+    <string name="tarot_master_two_name">馬克斯 — 策略性思考者</string>
     <string name="tarot_master_two_description">馬克斯以他的邏輯性和策略思考著稱。他講話直接且富有洞察力，擅長使用塔羅卡片提供具體的行動建議。他的風格適合那些尋求實用解決方案和喜歡直截了當的答案的人。</string>
     <string name="tarot_master_two_expertise">職業發展、財務規劃、解決複雜問題。</string>
 
     <!-- Ivy: The Spiritual Guide -->
-    <string name="tarot_master_three_name">艾薇 (Ivy) — 靈性導師</string>
+    <string name="tarot_master_three_name">艾薇 — 靈性導師</string>
     <string name="tarot_master_three_description">艾薇具有深厚的靈性連接，她的風格充滿神秘和啟示。她擅長運用直覺來解讀卡片，常常能夠提供深刻的靈性指導和啟發。她的讀卡常常讓人感覺像是進行了一次靈魂的旅行。</string>
     <string name="tarot_master_three_expertise">靈性覺醒、生命目的探索、過去生活。</string>
+
+    <!-- Dante: The Rational Skeptic -->
+    <string name="tarot_master_four_name">但丁 — 理性懷疑者</string>
+    <string name="tarot_master_four_description">但丁是一位極具分析能力的塔羅師，他以懷疑論的態度審視塔羅，並將其作為一種心理分析工具。他不依賴神秘主義，而是用科學、統計與邏輯來解釋牌義，幫助求占者找到理性的解答。</string>
+    <string name="tarot_master_four_expertise">邏輯推理、心理分析、決策評估。</string>
 
 </resources>

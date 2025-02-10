@@ -50,7 +50,7 @@ object OpenAIService {
                 val json = JSONObject().apply {
                     put("model", "gpt-3.5-turbo")
                     put("messages", messagesArray)
-                    put("max_tokens", 200)
+                    put("max_tokens", 400)
                 }
 
                 val body = json.toString().toRequestBody("application/json".toMediaTypeOrNull())

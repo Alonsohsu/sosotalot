@@ -22,6 +22,8 @@ class MasterIntroFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 获取前一个 Fragment 传来的 masterId
         val masterId = arguments?.getInt("masterId") ?: -1
         displayMasterDetails(masterId)
 
@@ -41,7 +43,7 @@ class MasterIntroFragment : Fragment() {
     private fun displayMasterDetails(masterId: Int) {
         val master = getMasterById(masterId)
         if (master != null) {
-            binding.imageTop.setImageResource(master.imageResId)
+            binding.imageTop.setImageResource(master.imageResId) // 更改 ImageView 的图片
             binding.textName.text = getString(master.nameResId)
             binding.textDescription.text = getString(master.descriptionResId)
             binding.textExpertise.text = getString(master.expertiseResId)
@@ -69,6 +71,12 @@ class MasterIntroFragment : Fragment() {
                 nameResId = R.string.tarot_master_three_name,
                 descriptionResId = R.string.tarot_master_three_description,
                 expertiseResId = R.string.tarot_master_three_expertise
+            )
+            3 -> Master(
+                imageResId = R.drawable.master_four_image,
+                nameResId = R.string.tarot_master_four_name,
+                descriptionResId = R.string.tarot_master_four_description,
+                expertiseResId = R.string.tarot_master_four_expertise
             )
             else -> null
         }

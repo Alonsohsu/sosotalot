@@ -28,7 +28,8 @@ class QuestionInputFragment : Fragment() {
             0 -> R.drawable.master_one_image
             1 -> R.drawable.master_two_image
             2 -> R.drawable.master_three_image
-            else -> R.drawable.master_two_image
+            3 -> R.drawable.master_four_image
+            else -> R.drawable.not_found
         }
 
         binding.imageTop.setImageResource(imageResource)

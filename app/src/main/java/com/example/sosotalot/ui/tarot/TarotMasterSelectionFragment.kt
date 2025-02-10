@@ -37,6 +37,9 @@ class TarotMasterSelectionFragment : Fragment() {
         binding.imageMasterThree.setOnClickListener {
             navigateToQuestionInput(R.id.action_tarotMasterSelectionFragment_to_masterIntroFragment, 2)
         }
+        binding.imageMasterFour.setOnClickListener {
+            navigateToQuestionInput(R.id.action_tarotMasterSelectionFragment_to_masterIntroFragment, 3)
+        }
     }
 
     private fun navigateToQuestionInput(actionId: Int, masterId: Int) {
@@ -44,7 +47,7 @@ class TarotMasterSelectionFragment : Fragment() {
         val currentDestination = navController.currentDestination?.id
 
         val bundle = Bundle().apply {
-            putInt("tarotMasterId", masterId)
+            putInt("masterId", masterId)
         }
 
         if (currentDestination == R.id.tarotMasterSelectionFragment) {
