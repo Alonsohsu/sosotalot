@@ -7,19 +7,18 @@
     android:background="@android:color/white">
 
     <!-- 设置按钮 -->
-    <ImageButton
-        android:id="@+id/settingsButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:src="@drawable/baseline_density_medium_24"
-        android:contentDescription="@string/settings_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!--     <ImageButton
+            android:id="@+id/settingsButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/baseline_density_medium_24"
+            android:contentDescription="@string/settings_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 用户信息容器 -->
     <LinearLayout
         android:id="@+id/profileContainer"
         android:layout_width="match_parent"
@@ -30,7 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- 头像 -->
         <ImageView
             android:id="@+id/profileImage"
             android:layout_width="100dp"
@@ -40,7 +38,6 @@
             android:contentDescription="@string/title_shop"
             android:background="@drawable/profile_picture_border" />
 
-        <!-- 会员 ID -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +61,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 昵称 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,7 +84,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 用户身份 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -112,7 +107,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 认证状态 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -136,7 +130,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 背包 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,7 +153,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 能量点 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -184,7 +176,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 星光点 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,7 +200,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 福报 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -233,7 +223,6 @@
                 android:textColor="#666666"/>
         </LinearLayout>
 
-        <!-- 祝福能量 -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -311,5 +300,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+-->
 
+    <ImageView
+        android:id="@+id/sampleImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/development"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

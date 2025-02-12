@@ -168,7 +168,7 @@ class LoginFragment : Fragment() {
      * 导航到主界面
      */
     private fun navigateToHomeScreen() {
-        findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
+//        findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
     }
 
     /**

@@ -19,17 +19,16 @@
         android:id="@+id/textViewCardName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="塔羅牌名稱"
+        android:text="@string/tarot_name"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp" />
 
-    <!-- 解讀結果 (初始隱藏) -->
     <TextView
         android:id="@+id/textViewResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="解讀結果"
+        android:text="@string/result"
         android:textSize="16sp"
         android:layout_marginTop="16dp" />
 
@@ -38,6 +37,6 @@
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="返回"
+        android:text="@string/return_back"
         android:layout_marginTop="16dp" />
 </LinearLayout>

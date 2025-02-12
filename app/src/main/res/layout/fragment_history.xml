@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryActivity">
 
-    <!-- 顶部标题 -->
+    <!--
     <TextView
         android:id="@+id/tvHistoryTitle"
         android:layout_width="0dp"
@@ -20,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- RecyclerView 用于显示历史记录 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistoryList"
         android:layout_width="0dp"
@@ -31,7 +30,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnClearHistory" />
 
-    <!-- 清除历史记录按钮 -->
     <Button
         android:id="@+id/btnClearHistory"
         android:layout_width="0dp"
@@ -44,5 +42,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:backgroundTint="@color/teal_700"
         android:textColor="@android:color/white" />
-
+    -->
+    <ImageView
+        android:id="@+id/sampleImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/development"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

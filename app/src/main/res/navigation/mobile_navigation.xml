@@ -6,16 +6,6 @@
     app:startDestination="@+id/tarotMasterSelectionFragment">
 
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.sosotalot.ui.login.LoginFragment"
-        android:label="Login"
-        tools:layout="@layout/fragment_login">
-        <action
-            android:id="@+id/action_loginFragment_to_navigation_home"
-            app:destination="@id/tarotMasterSelectionFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.sosotalot.ui.tarot.TarotMasterSelectionFragment"
         android:label="@string/title_divination"
@@ -45,9 +35,6 @@
     android:name="com.example.sosotalot.ui.profile.UserProfileFragment"
     android:label="@string/title_my"
     tools:layout="@layout/fragment_user_profile">
-    <action
-        android:id="@+id/action_userProfileFragment_to_loginFragment"
-        app:destination="@id/loginFragment" />
     </fragment>
 
     <!-- Tarot Master Selection Fragment -->
@@ -106,7 +93,9 @@
         android:name="com.example.sosotalot.ui.tarot.CardDrawingFragment"
         android:label="Draw Cards"
         tools:layout="@layout/fragment_card_drawing">
-
+        <action
+            android:id="@+id/action_cardDrawingFragment_to_tarotMasterSelectionFragment"
+            app:destination="@id/tarotMasterSelectionFragment" />
         <action
             android:id="@+id/action_cardDrawingFragment_to_tarotResultFragment"
             app:destination="@id/tarotResultFragment" />

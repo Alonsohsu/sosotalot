@@ -66,6 +66,12 @@ class CardDrawingFragment : Fragment() {
             updateLayoutForSelectedSpread()
         }
 
+        // 設定查看解釋按鈕的點擊事件
+        binding.viewExplanationButton.setOnClickListener {
+            sharedViewModel.clearTarotData()
+            findNavController().navigate(R.id.action_cardDrawingFragment_to_tarotMasterSelectionFragment)
+        }
+
         // **攔截返回鍵，防止返回 `LayoutSelectionFragment`**
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -85,6 +91,7 @@ class CardDrawingFragment : Fragment() {
      * 初始化抽牌畫面
      */
     private fun initInitialCard() {
+        binding.viewExplanationButton.visibility = View.GONE  // 隱藏按鈕
         val initialImageView = createTarotImageView(selectedImageResId)
         initialImageView.setOnClickListener { drawCardsAndShowResult() }
         binding.cardContainer.addView(initialImageView)
@@ -103,6 +110,8 @@ class CardDrawingFragment : Fragment() {
             2 -> addMultipleCards(tarotCards, 3)
             else -> Toast.makeText(context, "无效的牌阵选择", Toast.LENGTH_SHORT).show()
         }
+
+        binding.viewExplanationButton.visibility = View.VISIBLE  // 顯示按鈕
     }
 
     /**

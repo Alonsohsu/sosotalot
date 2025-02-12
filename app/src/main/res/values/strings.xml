@@ -22,6 +22,16 @@
     <string name="error_no_choose_layout">請選擇一個牌陣再繼續</string>
     <string name="error_interpretation_no_found">解釋獲取失敗，請重試</string>
 
+    <string name="redraw">重新占卜</string>
+    <string name="report_bug">mail回報問題</string>
+    <string name="recommand_layout">推薦牌陣</string>
+    <string name="confirm">確認</string>
+    <string name="submit_question">問問題</string>
+    <string name="input_quest">請輸入您的問題</string>
+
+    <string name="tarot_name">卡牌名稱</string>
+    <string name="result">結果</string>
+    <string name="return_back">返回</string>
 
     <string name="tarot_prompt_system">
         "您是一位專業的塔羅占卜師，擅長解析塔羅牌與運勢問題。請基於用戶的問題提供解讀，包括可能的未來發展方向。請注意，塔羅牌提供的是趨勢與建議，而非絕對預測。請按照以下格式提供深入的塔羅牌解讀：

@@ -26,9 +26,13 @@ class TarotViewModel : ViewModel() {
         _selectedIndex.value = index
     }
 
-    fun revealCard(cardName: String) {
-        revealedCards.add(cardName)
+    fun clearTarotData() {
+        _question.value = ""
+        _drawnCards.value = emptyList()
+        _interpretation.value = ""
+        _selectedIndex.value = -1
     }
+
 
     fun isCardRevealed(cardName: String): Boolean {
         return revealedCards.contains(cardName)
