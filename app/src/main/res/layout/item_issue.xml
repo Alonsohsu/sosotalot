@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- 問題標題 -->
+    <TextView
+        android:id="@+id/issueTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="問題標題"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 問題內容描述 -->
+    <TextView
+        android:id="@+id/issueDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="這是問題內容的描述..."
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/issueTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 按讚數量 -->
+    <TextView
+        android:id="@+id/likeCountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/issueDescription"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 按讚按鈕 -->
+    <ImageButton
+        android:id="@+id/likeButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:src="@drawable/icon_good"
+        android:contentDescription="Like Button"
+        app:tint="@android:color/darker_gray"
+        app:layout_constraintStart_toEndOf="@id/likeCountText"
+        app:layout_constraintTop_toTopOf="@id/likeCountText"
+        android:layout_marginStart="8dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

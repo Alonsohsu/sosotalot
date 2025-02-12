@@ -35,9 +35,10 @@
 
     <fragment
         android:id="@+id/navigation_bug"
-        android:name="com.example.sosotalot.ui.bug.BugFragment"
+        android:name="com.example.sosotalot.ui.Issue.IssueFragment"
         android:label="@string/title_bug"
-        tools:layout="@layout/fragment_bug" />
+        tools:layout="@layout/fragment_issue">
+    </fragment>
 
     <fragment
     android:id="@+id/navigation_my"

@@ -1,6 +1,5 @@
 package com.example.sosotalot.ui.login
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.sosotalot.R
-import com.example.sosotalot.data.firebase.FirebaseAuthManager
 import com.example.sosotalot.data.firebase.FirebaseManager
 import com.example.sosotalot.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -22,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginFragment : Fragment() {
@@ -39,32 +38,36 @@ class LoginFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id)) // **必须请求 ID 令牌**
+            .requestIdToken(getString(R.string.default_web_client_id)) // 必须请求 ID 令牌
             .requestEmail()
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-        // 检查用户是否已经登录
-        checkLoginStatus()
-
         return binding.root
-    }
-
-    private fun checkLoginStatus() {
-        if (firebaseAuth.currentUser != null) {
-            navigateToHomeScreen()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 設置 Firebase AuthStateListener
+        firebaseAuth.addAuthStateListener { auth ->
+            auth.currentUser?.let { user ->
+                Log.d("LoginFragment", "用戶已登入: ${user.uid}")
+                navigateToHomeScreen()
+            }
+        }
+
+        // 檢查登入狀態（Firebase 可能未及時加載，使用延遲檢查）
+        view.postDelayed({
+            checkLoginStatus()
+        }, 500)
+
         binding.googleLoginButton.setOnClickListener {
             if (isNetworkAvailable()) {
                 handleGoogleLogin()
             } else {
-                Toast.makeText(context, "No internet connection available", Toast.LENGTH_SHORT).show()
+                showToast("没有网络连接")
             }
         }
 
@@ -72,8 +75,19 @@ class LoginFragment : Fragment() {
             if (isNetworkAvailable()) {
                 handleGuestLogin()
             } else {
-                Toast.makeText(context, "No internet connection available", Toast.LENGTH_SHORT).show()
+                showToast("没有网络连接")
             }
+        }
+    }
+
+    /**
+     * 檢查登入狀態
+     */
+    private fun checkLoginStatus() {
+        val savedGuestUid = sharedPreferences.getString("guestUserId", null)
+
+        if (firebaseAuth.currentUser != null || savedGuestUid != null) {
+            navigateToHomeScreen()
         }
     }
 
@@ -88,7 +102,7 @@ class LoginFragment : Fragment() {
     /**
      * 处理 Google 登录的返回结果
      */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
@@ -97,8 +111,8 @@ class LoginFragment : Fragment() {
                 val account = task.getResult(ApiException::class.java)!!
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                Log.e("GoogleSignIn", "Google sign-in failed", e)
-                Toast.makeText(context, "Google 登录失败", Toast.LENGTH_SHORT).show()
+                Log.e("GoogleSignIn", "Google 登录失败", e)
+                showToast("Google 登录失败")
             }
         }
     }
@@ -111,17 +125,13 @@ class LoginFragment : Fragment() {
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
-                    user?.let {
-                        // ✅ 存入 Firestore
+                    firebaseAuth.currentUser?.let {
                         FirebaseManager.saveUserDataToFirestore(it)
-
-                        // ✅ 导航到主界面
                         navigateToHomeScreen()
                     }
                 } else {
-                    Log.e("GoogleAuth", "Firebase Authentication failed", task.exception)
-                    Toast.makeText(context, "Google 认证失败", Toast.LENGTH_SHORT).show()
+                    Log.e("GoogleAuth", "Firebase 认证失败", task.exception)
+                    showToast("Google 认证失败")
                 }
             }
     }
@@ -130,48 +140,29 @@ class LoginFragment : Fragment() {
      * 访客登录
      */
     private fun handleGuestLogin() {
-        val prefs = requireActivity().getSharedPreferences("MyAppPrefs", AppCompatActivity.MODE_PRIVATE)
-        val savedGuestUid = prefs.getString("guestUserId", null)
+        val savedGuestUid = sharedPreferences.getString("guestUserId", null)
 
         if (savedGuestUid != null) {
-            // ✅ 本機已經有訪客 ID，直接使用
             sharedPreferences.edit().putString("userId", savedGuestUid).apply()
             navigateToHomeScreen()
         } else {
-            // 🚀 如果沒有訪客 ID，則創建新的匿名帳戶
             firebaseAuth.signInAnonymously().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
-                    user?.let {
-                        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-                        sharedPreferences.edit().putString("userId", it.uid).apply()
-                        sharedPreferences.edit().putString("guestUserId", it.uid).apply() // ✅ 存入訪客 UID
-                        FirebaseManager.saveUserDataToFirestore(it) // ✅ 存入 Firestore
+                    firebaseAuth.currentUser?.let { user ->
+                        sharedPreferences.edit().apply {
+                            putBoolean("isLoggedIn", true)
+                            putString("userId", user.uid)
+                            putString("guestUserId", user.uid)
+                        }.apply()
+                        FirebaseManager.saveUserDataToFirestore(user)
                         navigateToHomeScreen()
                     }
                 } else {
-                    Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    showToast("访客登录失败")
                 }
             }
         }
     }
-
-
-    private fun createNewGuestAccount() {
-        firebaseAuth.signInAnonymously().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = firebaseAuth.currentUser
-                user?.let {
-                    sharedPreferences.edit().putString("guestUserId", it.uid).apply() // ✅ 儲存訪客 UID
-                    FirebaseManager.saveUserDataToFirestore(it) // ✅ 存入 Firestore
-                    navigateToHomeScreen()
-                }
-            } else {
-                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
 
     /**
      * 导航到主界面
@@ -190,9 +181,14 @@ class LoginFragment : Fragment() {
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
+    /**
+     * 显示 Toast
+     */
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
     companion object {
         private const val RC_SIGN_IN = 9001
     }
 }
-
-
