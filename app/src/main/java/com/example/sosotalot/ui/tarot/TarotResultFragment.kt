@@ -30,7 +30,7 @@ class TarotResultFragment : Fragment() {
         val question = arguments?.getString("question") ?: "未知问题"
         val card_name = arguments?.getString("selected_card_name") ?: "無此卡片"
         val card_pos = arguments?.getString("selected_card_position") ?: "錯誤"
-        val interpretation = arguments?.getString("interpretation") ?: "暂无解读"
+        val interpretation = arguments?.getString("meaning_text") ?: "暂无解读"
 
         val drawable = getCardImage(card_name)
         drawable?.let {

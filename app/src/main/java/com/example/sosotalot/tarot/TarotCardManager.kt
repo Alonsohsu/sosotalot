@@ -6,13 +6,22 @@ import com.example.sosotalot.R
 import java.io.IOException
 
 class TarotCardManager(private val context: Context) {
-    fun drawRandomTarotCards(): List<Pair<String, String>> {
+    fun drawRandomTarotCards(layoutId: Int): List<Pair<String, String>> {
         val tarotDeck = context.resources.getStringArray(R.array.all_tarot_cards).toList()
-        val positionOptions = listOf("正位", "逆位")  // 定义正位和逆位
+        val positionOptions = listOf("正位", "逆位")  // 定義正位和逆位
 
-        // 随机洗牌并从不重复的牌中抽取三张
-        return tarotDeck.shuffled().take(3).map { it to positionOptions.random() }
+        // **根據 `layoutId` 決定抽牌數量**
+        val cardCount = when (layoutId) {
+            0 -> 1  // 只抽 1 張
+            1 -> 2  // 只抽 2 張
+            2 -> 3  // 抽 3 張
+            else -> return emptyList()  // 無效 layout，回傳空列表
+        }
+
+        // **隨機抽取對應數量的牌**
+        return tarotDeck.shuffled().take(cardCount).map { it to positionOptions.random() }
     }
+
 
     fun getCardImage(cardName: String): Drawable? {
         return try {

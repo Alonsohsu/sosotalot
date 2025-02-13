@@ -1,6 +1,7 @@
 package com.example.sosotalot.ui.tarot
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,7 @@ class LayoutSelectionFragment : Fragment() {
         val question = arguments?.getString("question") ?: ""
 
         val tarotLayouts = parseLayouts(layoutsJson)
-
+        Log.e("question", "question: $question")
         // 設置 RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext()) // 直向排列
         val adapter = TarotLayoutAdapter(tarotLayouts) { selected ->

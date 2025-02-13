@@ -67,6 +67,7 @@ class QuestionInputFragment : Fragment() {
                 try {
                     val bundle = Bundle().apply {
                         putString("layoutsKeyJson", responseJson) // 直接传递 JSON 字符串
+                        putString("question", question) // 直接传递 JSON 字符串
                     }
                     findNavController().navigate(R.id.action_questionInputFragment_to_layoutSelectionFragment, bundle)
                 } catch (e: Exception) {

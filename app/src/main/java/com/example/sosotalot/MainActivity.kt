@@ -3,16 +3,20 @@ package com.example.sosotalot
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.sosotalot.databinding.ActivityMainBinding
+import com.example.sosotalot.viewmodel.TarotViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var tarotViewModel: TarotViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        tarotViewModel = ViewModelProvider(this).get(TarotViewModel::class.java)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
@@ -55,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_dashboard -> {
+                    clearTarotData()
                     // 首先尝试弹出回退栈中的实例
                     navController.popBackStack(R.id.tarotMasterSelectionFragment, true)
                     // 然后导航到 TarotMasterSelectionFragment
@@ -62,18 +67,22 @@ class MainActivity : AppCompatActivity() {
                     true // 表示事件已处理
                 }
                 R.id.navigation_shop -> {
+                    clearTarotData()
                     navController.navigate(R.id.navigation_shop)
                     true
                 }
                 R.id.navigation_bug -> {
+                    clearTarotData()
                     navController.navigate(R.id.navigation_bug)
                     true
                 }
                 R.id.navigation_history -> {
+                    clearTarotData()
                     navController.navigate(R.id.navigation_history)
                     true
                 }
                 R.id.navigation_my -> {
+                    clearTarotData()
                     navController.navigate(R.id.navigation_my)
                     true
                 }
@@ -81,6 +90,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun clearTarotData() {
+        tarotViewModel.clearTarotData()
+    }
+
 
     private fun isUserLoggedIn(): Boolean {
         // 这里可以添加检查逻辑，比如从 SharedPreferences 检查登录状态
