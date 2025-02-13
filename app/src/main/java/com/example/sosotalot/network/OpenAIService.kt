@@ -17,6 +17,7 @@ object OpenAIService {
     suspend fun fetchTarotData(
         context: Context,
         question: String,
+        meaning: String,
         tarotCards: List<Pair<String, String>>? = null,
         type: TarotRequestType
     ): String? {

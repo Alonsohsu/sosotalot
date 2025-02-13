@@ -145,6 +145,7 @@
     - 整理所有牌的牌義和架構，總結出一個結論。
 
     **問題**: $question
+    **每張牌代表的意義**:meaning
     **抽到的塔羅牌**:
     ${tarotCards.joinToString("\n") { "- ${it.first} (${it.second})" }}
 

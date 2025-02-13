@@ -53,7 +53,7 @@ class LayoutSelectionFragment : Fragment() {
     private fun navigateToCardDrawing(selectedLayout: TarotLayout, question: String) {
         val bundle = Bundle().apply {
             putInt("selectedLayoutId", selectedLayout.id)
-            putString("selectedDescription", selectedLayout.description)
+            putString("selectedMeaning", selectedLayout.meaning)
             putInt("selectedImageResId", selectedLayout.imageResId)
             putString("question", question)
         }

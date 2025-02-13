@@ -59,6 +59,7 @@ class QuestionInputFragment : Fragment() {
             val responseJson = OpenAIService.fetchTarotData(
                 context = requireContext(),
                 question = question,
+                meaning = "",
                 type = OpenAIService.TarotRequestType.RECOMMENDED_LAYOUTS // ✅ 使用新 API
             )
 

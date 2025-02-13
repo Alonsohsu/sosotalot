@@ -23,6 +23,7 @@ import com.example.sosotalot.viewmodel.TarotViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.tensorflow.lite.Interpreter
 
 class CardDrawingFragment : Fragment() {
 
@@ -34,7 +35,7 @@ class CardDrawingFragment : Fragment() {
 
     // 儲存從 arguments 取得的數據
     private var selectedLayoutId: Int = -1
-    private var selectedDescription: String = "未知牌阵"
+    private var selectedMeaning: String = "未知牌阵"
     private var question: String = "未知问题"
     private var selectedImageResId: Int = R.drawable.tarlot_back
 
@@ -52,18 +53,18 @@ class CardDrawingFragment : Fragment() {
         // 讀取 arguments
         arguments?.let {
             selectedLayoutId = it.getInt("selectedLayoutId", -1)
-            selectedDescription = it.getString("selectedDescription", "未知牌阵")
+            selectedMeaning = it.getString("selectedMeaning", "未知牌阵")
             question = it.getString("question", "未知问题")
             selectedImageResId = it.getInt("selectedImageResId", R.drawable.tarlot_back)
         }
 
-        Log.d("CardDrawingFragment", "牌阵ID: $selectedLayoutId, 描述: $selectedDescription, 图片ID: $selectedImageResId, 问题: $question")
+//        Log.d("CardDrawingFragment", "牌阵ID: $selectedLayoutId, 描述: $selectedMeaning, 图片ID: $selectedImageResId, 问题: $question")
 
         // 初始化畫面
         if (sharedViewModel.drawnCards.value.isNullOrEmpty()) {
             initInitialCard()
         } else {
-            updateLayoutForSelectedSpread()
+            updateLayoutForSelectedSpread("")
         }
 
         // 設定查看解釋按鈕的點擊事件
@@ -83,7 +84,7 @@ class CardDrawingFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (!sharedViewModel.drawnCards.value.isNullOrEmpty()) {
-            updateLayoutForSelectedSpread()
+            updateLayoutForSelectedSpread("")
         }
     }
 
@@ -93,22 +94,25 @@ class CardDrawingFragment : Fragment() {
     private fun initInitialCard() {
         binding.viewExplanationButton.visibility = View.GONE  // 隱藏按鈕
         val initialImageView = createTarotImageView(selectedImageResId)
-        initialImageView.setOnClickListener { drawCardsAndShowResult() }
+        initialImageView.setOnClickListener {
+            drawCardsAndShowResult()
+        }
         binding.cardContainer.addView(initialImageView)
     }
 
     /**
      * 根據選擇的牌陣更新畫面
      */
-    private fun updateLayoutForSelectedSpread() {
+    private fun updateLayoutForSelectedSpread(interpreter: String) {
         binding.cardContainer.removeAllViews()
+        binding.tarotResultText.text = interpreter
         val tarotCards = sharedViewModel.drawnCards.value ?: emptyList()
 
         when (selectedLayoutId) {
             0 -> addSingleCard(tarotCards)
             1 -> addMultipleCards(tarotCards, 2)
             2 -> addMultipleCards(tarotCards, 3)
-            else -> Toast.makeText(context, "无效的牌阵选择", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(context, "無效的牌陣", Toast.LENGTH_SHORT).show()
         }
 
         binding.viewExplanationButton.visibility = View.VISIBLE  // 顯示按鈕
@@ -196,6 +200,7 @@ class CardDrawingFragment : Fragment() {
             val interpretation = OpenAIService.fetchTarotData(
                 context = requireContext(),
                 question = question,
+                meaning = selectedMeaning,
                 tarotCards = tarotCards,
                 type = OpenAIService.TarotRequestType.INTERPRETATION
             )
@@ -204,7 +209,7 @@ class CardDrawingFragment : Fragment() {
                 showLoading(false)
                 if (interpretation != null) {
                     sharedViewModel.setTarotData(question, tarotCards, interpretation, selectedLayoutId)
-                    updateLayoutForSelectedSpread()
+                    updateLayoutForSelectedSpread(interpretation )
                 } else {
                     showToast(getString(R.string.error_interpretation_no_found))
                 }
@@ -227,6 +232,8 @@ class CardDrawingFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
+        binding.tarotResultText.text = "塔羅師解讀中..."
+        binding.progressBar.visibility = View.VISIBLE
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
